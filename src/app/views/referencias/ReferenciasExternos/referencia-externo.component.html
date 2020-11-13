@@ -1,0 +1,210 @@
+<!--<label for="conceptos">Conceptos</label>
+<select name="conceptos" id="conceptos">
+    <option value="0">* Seleccione una opción</option>
+    <option *ngFor="let concepto of this.lista_conceptos" value="{{concepto.PK_CONCEPTO}}">
+        {{concepto.NOMBRE_CONCEPTO}}
+    </option>
+</select>-->
+
+<div style="background-color:white;">
+    <!-- INICIO HEADER -->
+    <div class="row justify-content-center">
+        <div class="col-12 col-sm-12 col-md-12 col-lg-11 col-xl-10">
+            <img style="min-width: 100%; max-width: 100%" src="assets/banner.jpg">
+        </div>
+        <h1 class="text-center">
+            <br>
+            GENERADOR DE REFERENCIAS DE PAGO
+            <br>
+        </h1>
+        <p class="h1" style="color:blue">
+            ¡LAS REFERENCIAS PARA INSCRIPCIÓN A PRIMER SEMESTRE, SE GENERARÁN
+            <a href="http://tecvirtual.itleon.edu.mx">
+                DANDO CLIC AQUÍ!
+            </a>
+        </p>
+        <div class="alert alert-danger" role="alert">
+            Nota: La referencia de pago generada es individual, intransferible, con vigencia limitada y única para cada
+            concepto. No expongas tu pago a ser invalidado, no compartas o uses una referencia compartida, por las
+            faltas mencionadas NO GENERARAN NINGÚN TIPO DE REMBOLSO.
+        </div>
+    </div>
+    <!-- FIN HEADER -->
+    <div class="clearfix"></div>
+    <form role="form" [formGroup]="this.formulario" (ngSubmit)="this.onSubmit()">
+        <div class="row justify-content-center">
+            <p class="h3">
+                DATOS PERSONALES
+            </p>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="nombre" [ngClass]="{'text-danger': this.submitted && this.controls.nombre.errors}">
+                        Nombre:
+                    </label>
+                    <input type="text" class="form-control" id="nombre" name="nombre" formControlName="nombre">
+                    <div *ngIf="this.submitted && this.controls.nombre.errors">
+                        <p class="help-block text-danger">
+                            * Ingrese un valor válido
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="apellido_paterno" [ngClass]="{'text-danger': this.submitted && this.controls.apellido_paterno.errors}">
+                        Apellido Paterno:
+                    </label>
+                    <input type="text" class="form-control" id="apellido_paterno" name="apellido_paterno"
+                           formControlName="apellido_paterno">
+                    <div *ngIf="this.submitted && this.controls.apellido_paterno.errors">
+                        <p class="help-block text-danger">
+                            * Ingrese un valor válido
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="apellido_materno" [ngClass]="{'text-danger': this.submitted && this.controls.apellido_materno.errors}">
+                        Apellido Materno:
+                    </label>
+                    <input type="text" class="form-control" id="apellido_materno" name="apellido_materno"
+                    formControlName="apellido_materno">
+                    <div *ngIf="this.submitted && this.controls.apellido_materno.errors">
+                        <p class="help-block text-danger">
+                            * Ingrese un valor válido
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="correo" [ngClass]="{'text-danger': this.submitted && this.controls.correo.errors}">
+                        Correo:
+                    </label>
+                    <input type="text" class="form-control" id="correo" name="correo" formControlName="correo">
+                    <div *ngIf="this.submitted && this.controls.correo.errors">
+                        <p class="help-block text-danger">
+                            * Ingrese un valor válido
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="confirma_correo" [ngClass]="{'text-danger': this.submitted && this.controls.confirma_correo.errors}">
+                        Confirmar correo:
+                    </label>
+                    <input type="text" class="form-control" id="confirma_correo" name="confirma_correo"
+                    formControlName="confirma_correo">
+                    <div *ngIf="this.submitted && this.controls.confirma_correo.errors">
+                        <p class="help-block text-danger">
+                            * Ingrese un valor válido
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <p class="h3">
+                DATOS DE LA REFERENCIA
+            </p>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="concepto">Concepto:</label>
+                    <select name="concepto" id="concepto" class="form-control" formControlName="concepto">
+                        <option value="0">* Seleccione una opción</option>
+                        <option *ngFor="let concepto of this.lista_conceptos" value="{{concepto.PK_CONCEPTO}}">
+                            {{concepto.NOMBRE_CONCEPTO}}
+                        </option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="costo">Costo:</label>
+                    <input type="text" class="form-control" id="costo" name="costo" disabled>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="cantidad">Cantidad:</label>
+                    <input type="text" class="form-control" id="cantidad" name="cantidad" formControlName="cantidad">
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="descripcion">Descripción:</label>
+                    <textarea id="descripcion" name="descripcion" class="form-control" disabled></textarea>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <button class="btn btn-lg btn-success" type="submit">
+                        Generar Referencia
+                    </button>
+                    <input type="checkbox">Declaro que se verificó la información.
+                </div>
+            </div>
+        </div>
+    </form>
+
+
+    <!-- INICIO FOOTER -->
+    <div class="container-fluid d-print-none">
+        <div class="row justify-content-center">
+            <div class="col-12 col-sm-12 col-md-12 col-lg-11 col-xl-10">
+                <div class="container-fluid padded">
+                    <div class="row justify-content-md-center align-items-center">
+                        <div class="col-3 text-left">
+                            <img style="min-width: 100%; max-width: 100%" src="assets/barras_grises.jpg">
+                        </div>
+                        <div class="col-4 text-center">
+                            <img style="min-width: 100%; max-width: 100%" src="assets/SEP_HOTIZONTAL_FB.png">
+                        </div>
+                        <div class="col-3 text-right">
+                            <img style="min-width: 100%; max-width: 100%" src="assets/barras_grises.jpg">
+                        </div>
+                    </div>
+                </div>
+                <div class="container-fluid">
+                    <div class="col text-center font-weight-bold">
+                        <div>
+                            INSTITUTO TECNOLÓGICO DE LEÓN
+                        </div>
+                        <div>
+                            Algunos derechos reservados © 2019
+                        </div>
+                    </div>
+                </div>
+                <div class="container-fluid padded">
+                    <div class="row">
+                        <div class="col-12 col-sm-6 text-center">
+                            <div class="font-weight-bold" style="color: #007a33;">CAMPUS I</div>
+                            <div>Av. Tecnológico S/N - Fracc. Industrial Julián de Obregón</div>
+                            <div>León Guanajuato - C.P. 37290</div>
+                            <div>Teléfono (477) 710 5200 - Fax (477) 711 2072</div>
+                            <div>e-mail: tecleon@itleon.edu.mx</div>
+                        </div>
+                        <div class="col-12 col-sm-6 text-center">
+                            <div class="font-weight-bold" style="color: #007a33;">CAMPUS II</div>
+                            <div>Juan Alonso de Torres No. 3542 - Col. San José de Piletas</div>
+                            <div>León Guanajuato - C.P. 37330</div>
+                            <div>Teléfono (477) 710 5202 - Fax (477) 711 2072</div>
+                            <div>e-mail: tecleon@itleon.edu.mx</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- FIN FOOTER -->
+</div>

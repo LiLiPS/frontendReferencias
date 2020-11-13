@@ -1,0 +1,156 @@
+<div style="background-color:white;">
+    <!-- INICIO HEADER -->
+    <div class="row justify-content-center">
+        <div class="col-12 col-sm-12 col-md-12 col-lg-11 col-xl10">
+            <img style="min-width: 100%; max-width: 100%" src="assets/banner.jpg">
+        </div>
+        <h1 class="text-center">
+            <br>
+            Bienvenido a la plataforma
+            <br>
+            <b>TecVirtual del Tecnológico Nacional de México en León</b>
+            <br>
+            <br>
+        </h1>
+    </div>
+    <!-- FIN HEADER -->
+
+    <div class="app-body">
+        <main class="main d-flex align-items-center">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-8 mx-auto">
+                        <div class="card-group">
+                            <div class="card p-3">
+                                <div class="card-body">
+                                    <form #RequestControl=ngForm (ngSubmit)="onSubmit()">
+                                        <h1 class="text-center">Cambiar contraseña de la cuenta</h1>
+                                        <br>
+                                        <div class="alert alert-danger text-center" [hidden]="!error">
+                                            {{error}}
+                                            <br><br>
+                                            <a class="btn btn-danger px-4" href="/">
+                                                Aceptar
+                                            </a>
+                                        </div>
+
+                                        <div *ngIf="this.cuenta_activada">
+                                            <div class="alert alert-success" role="alert">
+                                                <h4 class="alert-heading text-center">¡Bienvenido!</h4>
+                                                <p class="text-center">
+                                                    Tu cuenta se ha activado con éxito, ahora podrás
+                                                    acceder a la plataforma
+                                                    <br>
+                                                    TecVirtual del Tecnológico Nacional de México en León.
+                                                    <br><br>
+
+                                                    <a class="btn btn-success px-4" href="/">
+                                                        Aceptar
+                                                    </a>
+                                                </p>
+                                            </div>
+                                        </div>
+
+                                        <div *ngIf="!ocultar_boton_enviar">
+                                            <div class="form-group">
+                                                <label for="curp">CURP</label>
+                                                <input type="text" name="curp" class="form-control" id="curp"
+                                                       [(ngModel)]="this.form.curp" required [disabled]="true">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="clave">Clave</label>
+                                                <input type="text" name="clave" class="form-control"
+                                                       placeholder="Clave" id="clave"
+                                                       [(ngModel)]="form.clave"
+                                                       aria-describedby="clavelHelp"
+                                                       required>
+                                                <small id="claveHelp" class="form-text text-muted">Recibida por correo electrónico</small>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="password1">Nueva contraseña</label>
+                                                <input type="password" name="password1" class="form-control"
+                                                       placeholder="Contraseña" id="password1"
+                                                       [(ngModel)]="form.password1" required>
+                                                <small id="password1Help" class="form-text text-muted">Debe contener al menos 8 caracteres</small>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="password2">Confirmar nueva contraseña</label>
+                                                <input type="password" name="password2" class="form-control"
+                                                       placeholder="Confirmar contraseña" id="password2"
+                                                       [(ngModel)]="form.password2" required>
+                                                <small id="password2Help" class="form-text text-muted">Debe contener al menos 8 caracteres</small>
+                                                <input type="hidden" name="token" id="token" [(ngModel)]="form.token">
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-12 text-center">
+                                                <button *ngIf="!ocultar_boton_enviar" type="submit"
+                                                        class="btn btn-primary px-4"
+                                                        [disabled]="!RequestControl.valid">Guardar
+                                                </button>
+                                                <a *ngIf="!ocultar_boton_enviar" class="btn btn-danger px-4"
+                                                   routerLink="/">
+                                                    Cancelar
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- INICIO FOOTER -->
+    <div class="container-fluid d-print-none">
+        <div class="row justify-content-center">
+            <div class="col-12 col-sm-12 col-md-12 col-lg-11 col-xl-10">
+                <div class="container-fluid padded">
+                    <div class="row justify-content-md-center align-items-center">
+                        <div class="col-3 text-left">
+                            <img style="min-width: 100%; max-width: 100%" src="assets/barras_grises.jpg">
+                        </div>
+                        <div class="col-4 text-center">
+                            <img style="min-width: 100%; max-width: 100%" src="assets/SEP_HOTIZONTAL_FB.png">
+                        </div>
+                        <div class="col-3 text-right">
+                            <img style="min-width: 100%; max-width: 100%" src="assets/barras_grises.jpg">
+                        </div>
+                    </div>
+                </div>
+                <div class="container-fluid">
+                    <div class="col text-center font-weight-bold">
+                        <div>
+                            INSTITUTO TECNOLÓGICO DE LEÓN
+                        </div>
+                        <div>
+                            Algunos derechos reservados © 2019
+                        </div>
+                    </div>
+                </div>
+                <div class="container-fluid padded">
+                    <div class="row">
+                        <div class="col-12 col-sm-6 text-center">
+                            <div class="font-weight-bold" style="color: #007a33;">CAMPUS I</div>
+                            <div>Av. Tecnológico S/N - Fracc. Industrial Julián de Obregón</div>
+                            <div>León Guanajuato - C.P. 37290</div>
+                            <div>Teléfono (477) 710 5200 - Fax (477) 711 2072</div>
+                            <div>e-mail: tecleon@itleon.edu.mx</div>
+                        </div>
+                        <div class="col-12 col-sm-6 text-center">
+                            <div class="font-weight-bold" style="color: #007a33;">CAMPUS II</div>
+                            <div>Juan Alonso de Torres No. 3542 - Col. San José de Piletas</div>
+                            <div>León Guanajuato - C.P. 37330</div>
+                            <div>Teléfono (477) 710 5202 - Fax (477) 711 2072</div>
+                            <div>e-mail: tecleon@itleon.edu.mx</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- FIN FOOTER -->
+</div>

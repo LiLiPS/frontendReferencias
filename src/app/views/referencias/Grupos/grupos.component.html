@@ -1,0 +1,220 @@
+<h2 class="text-center">Administración de grupos</h2>
+
+<!-- Inicio de obtener grupos -->
+<div class="row">
+    <div class="offset-md-1 col-md-10">
+
+        <!-- Inicio de botones de redirección -->
+        <br>
+        <div class="col-md-12 text-center">
+            <button class="btn btn-success" (click)="modal_filterGrupos.show()">
+                Buscar grupo(s)
+            </button>
+            &emsp;
+            <a class="btn btn-success" (click)="modal_create.show()" style="color: white; cursor: pointer">
+                Crear grupo
+            </a>
+        </div>
+        <br>
+        <!-- Fin de botones de redirección -->
+
+        <!-- Inicio de tabla de grupos -->
+        <table class="table table-striped">
+            <thead>
+            <tr class="text-center">
+                <th>No.</th>
+                <th>Nombre</th>
+                <th>Descripci&oacute;n</th>
+                <th>Nota</th>
+                <th>Operaciones</th>
+            </tr>
+            </thead>
+            <tbody *ngIf="this.lista_grupos.length > 0; else elseBlock">
+            <tr class="text-center" *ngFor="let grupo of this.lista_grupos.slice(this.ini,this.fin);let i = index">
+                <td class="align-middle">{{i + 1}}</td>
+                <td class="align-middle">{{grupo.NOMBRE}}</td>
+                <td class="align-middle">{{grupo.DESCRIPCION}}</td>
+                <td class="align-middle">{{grupo.NOTA}}</td>
+                <td class="align-middle">
+                    <button class="btn btn-sm btn-warning"
+                            tooltip="Editar grupo" (click)="load_grupo(grupo.PK_GRUPO)">
+                        <i class="icon-wrench"></i>
+                    </button>
+                    <button class="btn btn-sm btn-danger"
+                            tooltip="Eliminar grupo" (click)="delete_grupo(grupo.PK_GRUPO)">
+                        <i class="icon-trash"></i>
+                    </button>
+                    <a [routerLink]="['/referencias/73c369e11c78f47d0fd93d8bd83952d1']"
+                       [queryParams]="{clave_grupo: grupo.PK_GRUPO}"
+                       class="btn btn-sm btn-primary" tooltip="Administrar estudiantes del grupo" placement="bottom">
+                        <i class="icon-settings"></i>
+                    </a>
+                </td>
+            </tr>
+            </tbody>
+            <ng-template #elseBlock>
+                <tbody>
+                <tr class="text-center">
+                    <td colspan="5">No hay grupos.</td>
+                </tr>
+                </tbody>
+            </ng-template>
+        </table>
+        <!-- Fin de tabla de grupos -->
+
+        <!-- Inicio de botones para paginación -->
+        <div class="col-md-12 text-center">
+            <button class="btn btn-secondary" (click)="atras()" [disabled]="this.ini==0"><</button>
+            &emsp;
+            <button class="btn btn-secondary" (click)="adelante()"
+                    [disabled]="((this.lista_grupos.length-1)-this.fin) < 0">></button>
+        </div>
+        <br>
+        <!-- Fin de botones para paginación -->
+    </div>
+</div>
+<!-- Fin de obtener grupos -->
+
+<!-- Inicio ventana modal para búsqueda de grupos-->
+<div bsModal #modal_filterGrupos="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title text-center">Buscar grupo(s)</h4>
+                <button type="button" class="close" (click)="ocultar_modal_busqueda()" aria-label="Cerrar">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group row">
+                    <label class="col-md-4 col-form-label text-right" for="NOMBRE">Nombre</label>
+                    <div class="col-md-6">
+                        <input class="form-control" id="NOMBRE" name="NOMBRE" [(ngModel)]="this.NOMBRE">
+                    </div>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+            <div class="modal-footer">
+                <div class="col-md-10 text-center">
+                    <button class="btn btn-secondary" (click)="filter_grupos()">Buscar</button>
+                    <button class="btn btn-danger" (click)="ocultar_modal_busqueda()">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Fin ventana modal para búsqueda de grupos -->
+
+<!-- Inicio ventana modal para modificar un grupo -->
+<div bsModal #modal_updateGrupos="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title text-center">Modificar datos de un grupo</h4>
+                <button type="button" class="close" (click)="ocultar_modal_modificar()" aria-label="Cerrar">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" *ngIf="this.grupo_modificacion">
+                <div class="form-group row" >
+                    <div class="alert alert-danger" [hidden]="!error_actualizar">
+                        {{error_actualizar}}
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-md-4 col-form-label text-right">
+                        Nombre
+                    </label>
+                    <div class="col-md-6">
+                        <input class="form-control" [(ngModel)]="this.grupo_modificacion.NOMBRE">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-md-4 col-form-label text-right">Descripcion</label>
+                    <div class="col-md-6">
+                        <textarea class="form-control" rows="3" style="resize: none" [(ngModel)]="this.grupo_modificacion.DESCRIPCION"></textarea>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-md-4 col-form-label text-right">Nota</label>
+                    <div class="col-md-6">
+                        <textarea class="form-control" rows="3" style="resize: none" [(ngModel)]="this.grupo_modificacion.NOTA"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+            <div class="modal-footer">
+                <div class="col-md-12 text-center">
+                    <button class="btn btn-secondary" (click)="update_datos()">Guardar</button>
+                    <button type="button" class="btn btn-danger" (click)="ocultar_modal_modificar()">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Fin ventana modal para modificar grupo -->
+
+<!-- Inicio ventana modal de carga -->
+<div bsModal #loaderModal="bs-modal" class="modal" tabindex="-1" role="dialog" aria-hidden="false"
+     [config]="{backdrop: 'static',keyboard: false}" [style.display]="this.display">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content"
+             style="background-color: rgba(51, 51, 51, 0.8); background-clip: padding-box; border: 1px solid rgba(0, 0, 0, 0);">
+            <app-loader></app-loader>
+        </div>
+    </div>
+</div>
+<!-- Fin ventana modal de carga -->
+
+<!-- Inicio ventana modal para crear un concepto -->
+<div bsModal #modal_create="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title text-center">Crear un grupo</h4>
+                <button type="button" class="close" (click)="this.ocultar_modal_crear()" aria-label="Cerrar">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" >
+                <div class="form-group row">
+                    <label class="col-md-4 col-form-label text-right">
+                        Nombre
+                    </label>
+                    <div class="col-md-6">
+                        <input class="form-control" type="text" [(ngModel)]="this.grupo.NOMBRE">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-md-4 col-form-label text-right">
+                        Descripción
+                    </label>
+                    <div class="col-md-6">
+                        <textarea name="DESCRIPCION" class="form-control" rows="5" style="resize: none"
+                                  [(ngModel)]="this.grupo.DESCRIPCION"></textarea>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-md-4 col-form-label text-right">
+                        Nota
+                    </label>
+                    <div class="col-md-6">
+                        <textarea name="DESCRIPCION" class="form-control" rows="5" style="resize: none"
+                                  [(ngModel)]="this.grupo.NOTA"></textarea>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+                <div class="modal-footer">
+                    <div class="col-md-12 text-center">
+                        <button class="btn btn-secondary" (click)="create_grupo();">Guardar</button>
+                        <button type="button" class="btn btn-danger" (click)="ocultar_modal_crear()">Cancelar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Fin ventana modal para crear un concepto -->

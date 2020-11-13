@@ -1,0 +1,148 @@
+<div style="background-color:white;">
+    <!-- INICIO HEADER -->
+    <div class="row justify-content-center">
+        <div class="col-12 col-sm-12 col-md-12 col-lg-11 col-xl10">
+            <img style="min-width: 100%; max-width: 100%" src="assets/banner.jpg">
+        </div>
+        <h1 class="text-center">
+            <br>
+            Bienvenido a la plataforma
+            <br>
+            <b>TecVirtual del Tecnológico Nacional de México en León</b>
+            <br>
+            <br>
+        </h1>
+    </div>
+    <!-- FIN HEADER -->
+
+    <div class="app-body">
+        <main class="main d-flex align-items-center">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-8 mx-auto">
+                        <div class="card-group">
+                            <div class="card p-3">
+                                <div class="card-body">
+                                    <form #loginForm=ngForm (ngSubmit)="onSubmit()">
+                                        <div class="alert alert-danger" [hidden]="!error">
+                                            {{error}}
+                                        </div>
+                                        <h1 class="text-center">Iniciar sesión</h1>
+
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text"><i class="icon-user"></i></span>
+                                            </div>
+                                            <input type="text" name="curp" class="form-control" placeholder="CURP"
+                                                   id="curp" autocomplete="curp" [(ngModel)]="form.curp"
+                                                   maxlength=18
+                                                   onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase().replace(' ','')"
+                                                   required>
+                                        </div>
+                                        <div class="input-group mb-4">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text"><i class="icon-lock"></i></span>
+                                            </div>
+                                            <input type="password" name="password" class="form-control"
+                                                   placeholder="Contraseña" id="inputPassword3"
+                                                   autocomplete="current-password" [(ngModel)]="form.password" required>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-12 text-center">
+                                                <button type="submit" class="btn btn-primary px-4"
+                                                        [disabled]="!loginForm.valid">Ingresar
+                                                </button>
+                                            </div>
+                                            <!-- <div class="col-6 text-right">
+                                               <button type="button" class="btn btn-link px-0">Forgot password?</button>
+                                             </div>-->
+                                        </div>
+                                        <small class=float-right>
+                                            <a routerLink="/request-password-reset">Recuperar contraseña</a>
+                                        </small>
+                                        <br>
+                                        <small class=float-right>
+                                            <a routerLink="/get-password">Obtener contraseña</a>
+                                        </small>
+                                    </form>
+                                </div>
+                            </div>
+                            <!--<div class="card text-white bg-primary py-5 d-md-down-none" style="width:44%">
+                              <div class="card-body text-center">
+                                <div>
+                                  <h2>Sign up</h2>
+                                  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                                  <button type="button" class="btn btn-primary active mt-3">Register Now!</button>
+                                </div>
+                              </div>
+                            </div>-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- INICIO FOOTER -->
+    <div class="container-fluid d-print-none">
+        <div class="row justify-content-center">
+            <div class="col-12 col-sm-12 col-md-12 col-lg-11 col-xl-10">
+                <div class="container-fluid padded">
+                    <div class="row justify-content-md-center align-items-center">
+                        <div class="col-3 text-left">
+                            <img style="min-width: 100%; max-width: 100%" src="assets/barras_grises.jpg">
+                        </div>
+                        <div class="col-4 text-center">
+                            <img style="min-width: 100%; max-width: 100%" src="assets/SEP_HOTIZONTAL_FB.png">
+                        </div>
+                        <div class="col-3 text-right">
+                            <img style="min-width: 100%; max-width: 100%" src="assets/barras_grises.jpg">
+                        </div>
+                    </div>
+                </div>
+                <div class="container-fluid">
+                    <div class="col text-center font-weight-bold">
+                        <div>
+                            INSTITUTO TECNOLÓGICO DE LEÓN
+                        </div>
+                        <div>
+                            Algunos derechos reservados © 2019
+                        </div>
+                    </div>
+                </div>
+                <div class="container-fluid padded">
+                    <div class="row">
+                        <div class="col-12 col-sm-6 text-center">
+                            <div class="font-weight-bold" style="color: #007a33;">CAMPUS I</div>
+                            <div>Av. Tecnológico S/N - Fracc. Industrial Julián de Obregón</div>
+                            <div>León Guanajuato - C.P. 37290</div>
+                            <div>Teléfono (477) 710 5200 - Fax (477) 711 2072</div>
+                            <div>e-mail: tecleon@itleon.edu.mx</div>
+                        </div>
+                        <div class="col-12 col-sm-6 text-center">
+                            <div class="font-weight-bold" style="color: #007a33;">CAMPUS II</div>
+                            <div>Juan Alonso de Torres No. 3542 - Col. San José de Piletas</div>
+                            <div>León Guanajuato - C.P. 37330</div>
+                            <div>Teléfono (477) 710 5202 - Fax (477) 711 2072</div>
+                            <div>e-mail: tecleon@itleon.edu.mx</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- FIN FOOTER -->
+</div>
+
+<!-- INICIO VENTANA MODAL DE CARGA -->
+<div bsModal #loaderModal="bs-modal" class="modal" tabindex="-1" role="dialog" aria-hidden="false"
+     [config]="{backdrop: 'static',keyboard: false}" [style.display]="this.display">
+    <!--[config]="{backdrop: 'static',keyboard: false}">-->
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content"
+             style="background-color: rgba(51, 51, 51, 0.8); background-clip: padding-box; border: 1px solid rgba(0, 0, 0, 0);">
+            <app-loader></app-loader>
+        </div>
+    </div>
+</div>
+<!-- FIN VENTANA MODAL DE CARGA -->

@@ -1,0 +1,99 @@
+<div *ngIf="this.estatus_reinscripciones; else elseBlock">
+    <h2 class="text-center">Referencia de Reinscripción</h2>
+
+    <div class="row">
+        <div class="offset-md-2 col-md-8">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div>
+                                <b>Estudiante:</b> {{this.referencia.NOMBRE_USUARIO}} {{this.referencia.PRIMER_APELLIDO}}  {{this.referencia.SEGUNDO_APELLIDO}}
+                            </div>
+                            <div>
+                                <b>Banco: </b> BANCOMER
+                            </div>
+                            <div>
+                                <b>Clave CIE: </b> 1369296
+                            </div>
+                            <div>
+                                <b>Institución: </b> TECNOLÓGICO NACIONAL DE MÉXICO
+                            </div>
+                            <div>
+                                <b>Concepto: </b> {{this.referencia.NOMBRE_CONCEPTO}}
+                            </div>
+                            <div>
+                                <b>Cantidad: </b> {{this.referencia.CANTIDAD_SOLICITADA}}
+                            </div>
+                            <div>
+                                <b>Número de Referencia: </b> {{this.referencia.NUMERO_REF_BANCO}}
+                            </div>
+                            <div>
+                                <b>Importe: </b> {{this.referencia.MONTO}}
+                            </div>
+                            <div>
+                                <b>Fecha Límite de Pago: </b> {{this.referencia.FECHA_EXPIRACION}}
+                            </div>
+                        </div>
+                        <div *ngIf="this.referencia.ESTATUS_REFERENCIA == 0" class="col-md-4">
+                            <h5 class="text-center">
+                                <b>Depósito No Realizado</b>
+                            </h5>
+                            <img style="max-width: 100%; height: auto; display: block; margin-left: auto; margin-right: auto; width: 50%"
+                                 class="text-center" src="../../../../assets/img/estatus_reinscripcion/red-x.png" alt="Depósito No Realizado">
+                        </div>
+                        <div *ngIf="this.referencia.ESTATUS_REFERENCIA == 1">
+                            <h5 class="text-center">
+                                <b>Depósito Realizado</b>
+                            </h5>
+                            <img style="max-width: 100%; height: auto; display: block; margin-left: auto; margin-right: auto; width: 50%"
+                                 class="text-center" src="../../../../assets/img/estatus_reinscripcion/green-check.png" alt="Depósito Realizado">
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row text-justify" style="justify-content: center; margin: 0 auto">
+                        <div>
+                            A continuación se enlistan los medios habilitados para la recepción de pagos al Tecnológico Nacional de México en León:
+                        </div>
+                        <ul>
+                            <li><b>Bancomer en algunas de sus sucursales no acepta pagos por ventanilla, te sugerimos estas opciones.</b></li>
+                            <li><b>PRACTICAJA</b> (Recepción en efectivo. Servicio 24/7).</li>
+                            <li><b>CAJERO AUTOMÁTICO</b> (Servicio 24/7 con cargo a cuenta Bancomer en el módulo de "Pago de Servicios").</li>
+                            <li><b>BANCOMER MÓVIL</b> (Servicio 24/7 con cargo a cuenta Bancomer en el módulo de "Pago de Servicios").</li>
+                            <li><b>CIE INTERBANCARIO</b> (A través de Banca Electrónica Otros Bancos con la cuenta CLABE 012914002013692969).</li>
+                            <li><b>BANCA ELECTRÓNICA BANCOMER</b> (Servicio 24/7 con cargo a cuenta Bancomer en el módulo de "Pago de Servicios").</li>
+                        </ul>
+                        <div>
+                            <b>Para consultar el proceso de reinscripción,  <a href="https://www.itleon.edu.mx/documents/Admisiones_agosto2019/Procesodereinscripcion20192.pdf" target="_blank">da clic aquí.</a></b>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<ng-template #elseBlock>
+    <h2 class="text-center">Referencia de Reinscripción</h2>
+
+    <br>
+    <div class="row">
+        <div class="offset-md-1 col-md-10">
+            <div class="text-center">
+                <b>No se encuentra activo el periodo de reinscripción.</b>
+            </div>
+        </div>
+    </div>
+</ng-template>
+
+<!-- Inicio ventana modal de carga -->
+<div bsModal #loaderModal="bs-modal" class="modal" tabindex="-1" role="dialog" aria-hidden="false"
+     [config]="{backdrop: 'static',keyboard: false}" [style.display]="this.display">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content"
+             style="background-color: rgba(51, 51, 51, 0.8); background-clip: padding-box; border: 1px solid rgba(0, 0, 0, 0);">
+            <app-loader></app-loader>
+        </div>
+    </div>
+</div>
+<!-- Fin ventana modal de carga -->

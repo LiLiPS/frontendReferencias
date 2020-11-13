@@ -1,0 +1,103 @@
+<h2 class="text-center">Historial de montos de conceptos</h2>
+
+<!-- Inicio de obtener conceptos -->
+<div class="row">
+    <div class="offset-md-1 col-md-10">
+
+        <!-- Inicio de botones de redirección -->
+        <br>
+        <div class="col-md-12 text-center">
+            <button class="btn btn-success" (click)="modal_filterHistorialConceptos.show()">
+                Buscar por concepto(s)
+            </button>
+            &emsp;
+            <button (click)="volver()" class="btn btn-primary">
+                Regresar a conceptos
+            </button>
+        </div>
+        <br>
+        <!-- Fin de botones de redirección -->
+
+        <!-- Inicio de tabla de historial de conceptos -->
+        <table class="table table-striped">
+            <thead>
+            <tr class="text-center">
+                <th>No.</th>
+                <th>Concepto</th>
+                <th>Monto anterior</th>
+                <th>Monto nuevo</th>
+            </tr>
+            </thead>
+            <tbody *ngIf="this.lista_historial.length > 0; else elseBlock">
+            <tr class="text-center" *ngFor="let historial of this.lista_historial.slice(this.ini,this.fin);let i = index">
+                <td class="align-middle">{{i + 1}}</td>
+                <td class="align-middle">{{historial.NOMBRE}}</td>
+                <td class="align-middle">{{historial.MONTO_ANTERIOR}}</td>
+                <td class="align-middle">{{historial.MONTO_NUEVO}}</td>
+            </tr>
+            </tbody>
+            <ng-template #elseBlock>
+                <tbody>
+                <tr class="text-center">
+                    <td colspan="4">No hay historial de ningún concepto.</td>
+                </tr>
+                </tbody>
+            </ng-template>
+        </table>
+        <!-- Fin de tabla de historial de conceptos -->
+
+        <!-- Inicio de botones para paginación -->
+        <div class="col-md-12 text-center">
+            <button class="btn btn-secondary" (click)="atras()" [disabled]="this.ini==0"><</button>
+            &emsp;
+            <button class="btn btn-secondary" (click)="adelante()"
+                    [disabled]="((this.lista_historial.length-1)-this.fin) < 0">></button>
+        </div>
+        <br>
+        <!-- Fin de botones para paginación -->
+    </div>
+</div>
+<!-- Fin de obtener conceptos -->
+
+<!-- Inicio ventana modal para búsqueda de conceptos-->
+<div bsModal #modal_filterHistorialConceptos="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title text-center">Buscar historial de concepto(s)</h4>
+                <button type="button" class="close" (click)="ocultar_modal_busqueda()" aria-label="Cerrar">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group row">
+                    <label class="col-md-4 col-form-label text-right" for="NOMBRE">Nombre</label>
+                    <div class="col-md-6">
+                        <input class="form-control" id="NOMBRE" name="NOMBRE" [(ngModel)]="this.nombre">
+                    </div>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+            <div class="modal-footer">
+                <div class="col-md-10 text-center">
+                    <button class="btn btn-secondary" (click)="filter_historialConceptos()">Buscar</button>
+                    <button class="btn btn-danger" (click)="ocultar_modal_busqueda()">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Fin ventana modal para búsqueda de conceptos -->
+
+<!-- Inicio ventana modal de carga -->
+<div bsModal #loaderModal="bs-modal" class="modal" tabindex="-1" role="dialog" aria-hidden="false"
+     [config]="{backdrop: 'static',keyboard: false}" [style.display]="this.display">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content"
+             style="background-color: rgba(51, 51, 51, 0.8); background-clip: padding-box; border: 1px solid rgba(0, 0, 0, 0);">
+            <app-loader></app-loader>
+        </div>
+    </div>
+</div>
+<!-- Fin ventana modal de carga -->

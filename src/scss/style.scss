@@ -1,0 +1,17 @@
+// If you want to override variables do it here
+@import "variables";
+
+// Import styles
+@import "~@coreui/coreui/scss/coreui";
+@import "~@angular/material/prebuilt-themes/indigo-pink.css"; //edicion
+
+// If you want to add something do it here
+@import "custom";
+
+.ng-invalid:not(form){
+    border-left: 5px solid red;
+} 
+
+.ng-valid:not(form){
+    border-left: 5px solid green;
+} 

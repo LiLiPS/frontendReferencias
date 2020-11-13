@@ -1,0 +1,124 @@
+<app-header [fixed]="true" [navbarBrandFull]="{src: 'assets/itl.ico', width: 60, height: 50, alt: 'TecNM'}"
+    [navbarBrandMinimized]="{src: 'assets/itl.ico', width: 60, height: 50, alt: 'TecNM'}" [sidebarToggler]="'lg'"
+    [asideMenuToggler]="'lg'">
+    <ul class="nav navbar-nav d-md-down-none">
+        <!--
+          <li class="nav-item px-3">
+          <a class="nav-link" href="#">Dashboard</a>
+        </li>
+        <li class="nav-item px-3">
+          <a class="nav-link" href="#">Users</a>
+        </li>
+        <li class="nav-item px-3">
+          <a class="nav-link" href="#">Settings</a>
+        </li>
+        -->
+    </ul>
+
+    <ul class="nav navbar-nav ml-auto">
+        <!--<li class="nav-item d-md-down-none">
+          <a class="nav-link" href="#"><i class="icon-bell"></i><span class="badge badge-pill badge-danger">5</span></a>
+        </li>
+        <li class="nav-item d-md-down-none">
+          <a class="nav-link" href="#"><i class="icon-list"></i></a>
+        </li>-->
+
+        <li class="nav-item dropdown" dropdown placement="bottom right">
+            <a class="nav-link" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"
+                dropdownToggle (click)="false">
+                {{this.nombre_usuario}} ({{this.numero_control}})
+                <img src="assets/img/avatars/user_icon.png" class="img-avatar" alt="admin@bootstrapmaster.com" />
+            </a>
+            <div class="dropdown-menu dropdown-menu-right" *dropdownMenu aria-labelledby="simple-dropdown">
+                <div class="dropdown-header text-center"><strong>Cuenta</strong></div>
+
+
+                <a *ngIf="this.tipo_usuario == 1" class="dropdown-item" href="/#/usuarios/1265530aa9b88c9ede2fd25bacf1001e"><i class="fa fa-user"></i> Perfil</a>
+                <a *ngIf="this.tipo_usuario == 2" class="dropdown-item" href="/#/usuarios/c67214e3855338c12a68dfa2c87eb47f"><i class="fa fa-user"></i> Perfil</a>
+                <!--
+                <a class="dropdown-item" href="#"><i class="fa fa-envelope-o"></i> Mensajes<span
+                    class="badge badge-success">42</span></a>
+                <a class="dropdown-item" href="#"><i class="fa fa-tasks"></i> Calendario<span
+                    class="badge badge-danger">42</span></a>
+                -->
+
+                <!--<a class="dropdown-item" href="#"><i class="fa fa-comments"></i> Comment<span class="badge badge-warning">42</span></a>-->
+                <div class="dropdown-header text-center"><strong>Ajustes</strong></div>
+
+                <!--<a class="dropdown-item" href="#"><i class="fa fa-user"></i> Perfil</a>-->
+                <!--<a class="dropdown-item" href="#"><i class="fa fa-wrench"></i> Configuracion</a>-->
+
+                <!--
+                <a class="dropdown-item" href="#"><i class="fa fa-usd"></i> Payments<span class="badge badge-dark">42</span></a>
+                <a class="dropdown-item" href="#"><i class="fa fa-file"></i> Projects<span class="badge badge-primary">42</span></a>
+                <div class="divider"></div>
+                <a class="dropdown-item" href="#"><i class="fa fa-shield"></i> Lock account</a>     *ngIf="loggedIn"
+                -->
+
+                <a class="dropdown-item" href="#" (click)="logout($event)"><i class="fa fa-lock"></i> Cerrar Sesión</a>
+            </div>
+        </li>
+    </ul>
+</app-header>
+<div class="app-body">
+    <app-sidebar [fixed]="true" [display]="''">
+        <app-sidebar-nav [navItems]="navItems" [perfectScrollbar] [disabled]="sidebarMinimized"></app-sidebar-nav>
+        <app-sidebar-minimizer></app-sidebar-minimizer>
+    </app-sidebar>
+    <!-- Main content -->
+    <main class="main" style="background-color:hsl(0,0%,100%);">
+        <!-- Breadcrumb -->
+        <ol class="breadcrumb">
+            <app-breadcrumb></app-breadcrumb>
+            <!-- Breadcrumb Menu-->
+            <!-- <li class="breadcrumb-menu d-md-down-none">
+               <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+                 <a class="btn" href="#"><i class="icon-speech"></i></a>
+                 <a class="btn" [routerLink]="['/dashboard']"><i class="icon-graph"></i> &nbsp;Dashboard</a>
+                 <a class="btn" href="#"><i class="icon-settings"></i> &nbsp;Settings</a>
+               </div>
+             </li>-->
+        </ol>
+        <div class="container-fluid">
+            <div *ngIf="mostrarAyuda">
+                <div class="embed-responsive embed-responsive-16by9" *ngIf="!mostrarVideo">
+                    <iframe class="embed-responsive-item" src="assets/video/guia.mp4"></iframe>
+                </div>
+                <div *ngIf="mostrarVideo">
+                    <p class="h3">Ayuda</p>
+                    <br>
+                    <a class="btn btn-warning" (click)="this.recargar();">Cargar menú de sistemas</a>
+                    <br>
+                    <br>
+                    <a href="assets/video/guia.mp4" target="_blank">Ver video guía del panel principal del sistema</a>
+                </div>
+            </div>
+            <router-outlet></router-outlet>
+        </div>
+
+    </main>
+    <app-aside [fixed]="true" [display]="false">
+        <app-navbar-sistems></app-navbar-sistems>
+    </app-aside>
+</div>
+<app-footer>
+    <span>Tecnológico Nacional de México en León</span>
+    <span class="ml-auto">Bienvenido</span>
+</app-footer>
+
+<!-- INICIO VENTANA MODAL DE CARGA -->
+<!-- INICIO VENTANA MODAL DE CARGA -->
+<div bsModal #loaderModal="bs-modal" class="modal" tabindex="-1" role="dialog" aria-hidden="false"
+     [config]="{backdrop: 'static',keyboard: false}" [style.display]="this.display">
+    <!--[config]="{backdrop: 'static',keyboard: false}">-->
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content"
+             style="background-color: rgba(51, 51, 51, 0.8); background-clip: padding-box; border: 1px solid rgba(0, 0, 0, 0);">
+            <app-loader></app-loader>
+        </div>
+    </div>
+</div>
+<!-- FIN VENTANA MODAL DE CARGA -->
+
+<!-- FIN VENTANA MODAL DE CARGA -->
+

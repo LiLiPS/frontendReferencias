@@ -1,0 +1,121 @@
+<h2 class="text-center">Grupo {{grupo.NOMBRE}}</h2>
+
+<div class="row">
+    <div class="offset-1 col-md-10">
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <button (click)="volver()" class="btn btn-primary">
+                    Regresar a grupos
+                </button>
+            </div>
+        </div>
+        <br>
+        <!-- Agregar alumnos -->
+        <div class="clearfix"></div>
+        <div class="row">
+            <div class="col-md-4 text-right">
+                <label for="numero_control" class="h4">Agregar alumnos</label>
+            </div>
+            <div class="col-md-4 input-group">
+                <input type="text" id="numero_control" name="numero_control" class="form-control"
+                       placeholder="Número de control" [(ngModel)]="this.numero_control"
+                       aria-describedby="boton_buscar">
+                <div class="input-group-append">
+                    <button class="btn btn-primary" type="button" id="boton_buscar" (click)="this.buscar_estudiante()">
+                        <span class="icon-magnifier"></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <br>
+
+        <table class="table table-striped" *ngIf="this.estudiante_busqueda != null">
+            <thead>
+            <tr>
+                <th class="text-center">Número de control</th>
+                <th class="text-center">Nombre</th>
+                <th class="text-center">Semestre</th>
+                <th class="text-center">Carrera</th>
+                <th class="text-center">Agregar</th>
+            </tr>
+            </thead>
+            <tbody *ngIf="this.estudiante_busqueda">
+            <tr>
+                <td class="text-center">{{this.estudiante_busqueda.NUMERO_CONTROL}}</td>
+                <td class="text-center">
+                    {{this.estudiante_busqueda.NOMBRE_USUARIO}}
+                    {{this.estudiante_busqueda.PRIMER_APELLIDO}}
+                    {{this.estudiante_busqueda.SEGUNDO_APELLIDO}}
+                </td>
+                <td class="text-center">{{this.estudiante_busqueda.SEMESTRE}}</td>
+                <td class="text-center">{{this.estudiante_busqueda.NOMBRE_CARRERA}}</td>
+                <td class="text-center">
+                    <button class="btn btn-success" tooltip="Agregar estudiante al grupo"
+                            (click)="this.agregar_estudiante(estudiante_busqueda.PK_USUARIO, grupo.PK_GRUPO)">
+                        <i class="icon-plus"></i>
+                    </button>
+                </td>
+            </tr>
+            </tbody>
+            <tbody *ngIf="this.estudiante_busqueda == null">
+            <tr>
+                <td colspan="6">No se han encontrado datos del estudiante.</td>
+            </tr>
+            </tbody>
+        </table>
+
+        <br>
+        <div class="col-md-12">
+            <h3 class="text-center">Lista de alumnos del grupo</h3>
+        </div>
+        <table class="table table-striped">
+            <thead>
+            <tr class="text-center">
+                <th>No.</th>
+                <th>Número de control</th>
+                <th>Nombre</th>
+                <th>Semestre</th>
+                <th>Carrera</th>
+                <th>Eliminar</th>
+            </tr>
+            </thead>
+            <tbody *ngIf="this.detalle_grupo.length > 0">
+            <tr class="text-center" *ngFor="let alumno of this.detalle_grupo; let i = index">
+                <td>
+                    {{i + 1}}
+                </td>
+                <td class="text-center">{{alumno.NUMERO_CONTROL}}</td>
+                <td>
+                    {{alumno.NOMBRE_USUARIO}} {{alumno.PRIMER_APELLIDO}} {{alumno.SEGUNDO_APELLIDO}}
+                </td>
+                <td>{{alumno.SEMESTRE}}</td>
+                <td>{{alumno.NOMBRE_CARRERA}}</td>
+                <td>
+                    <button class="btn btn-sm btn-danger"
+                            (click)="this.eliminar_estudiante(alumno.PK_GRUPO_DETALLE)">
+                        <i class="icon-trash"></i>
+                    </button>
+                </td>
+            </tr>
+            </tbody>
+            <tbody *ngIf="this.detalle_grupo.length == 0">
+            <tr>
+                <td colspan="6" class="text-center">No se han asignado alumnos.</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- INICIO VENTANA MODAL DE CARGA -->
+<div bsModal #loaderModal="bs-modal" class="modal" tabindex="-1" role="dialog" aria-hidden="false"
+     [config]="{backdrop: 'static',keyboard: false}" [style.display]="this.display">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content"
+             style="background-color: rgba(51, 51, 51, 0.8); background-clip: padding-box; border: 1px solid rgba(0, 0, 0, 0);">
+            <app-loader></app-loader>
+        </div>
+    </div>
+</div>
+<!-- FIN VENTANA MODAL DE CARGA -->

@@ -1,0 +1,49 @@
+<div class="app-body">
+  <main class="main d-flex align-items-center">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-8 mx-auto">
+          <div class="card-group">
+            <div class="card p-3">
+              <div class="card-body">
+                <form #ResetPasswordForm=ngForm (ngSubmit)="onSubmit()"> 
+                  <h1>Cambio de contraseña</h1>
+
+                  <!-- <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text"><i class="icon-user"></i></span>
+                    </div>
+                    <input type="email" name="email" class="form-control" placeholder="Email" id="inputEmail3" autocomplete="email" [(ngModel)]="form.email" required >
+                    <br>
+                    <span class="text-danger" [hidden]="!error.email">{{error.email}}</span>
+                  </div>-->
+                  <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text"><i class="icon-lock"></i></span>
+                    </div>
+                    <input type="password" name="password" class="form-control" placeholder="Password" id="inputPassword3" autocomplete="password" [(ngModel)]="form.password" required >
+                    <br>
+                    <span class="text-danger" [hidden]="!error.password">{{error.password}}</span>
+                  </div>
+                  <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text"><i class="icon-lock"></i></span>
+                    </div>
+                    <input type="password" name="password_confirmation" class="form-control" placeholder="Confirm Password" id="inputPassword4" autocomplete="current-password" [(ngModel)]="form.password_confirmation" required >
+                    <br>
+                    <span class="text-danger" [hidden]="!error.password_confirmation">{{error.password_confirmation}}</span>
+                  </div>
+                  <div class="row">
+                    <div class="col-6">
+                      <button type="submit" class="btn btn-primary px-4" [disabled]="!ResetPasswordForm.valid">Guardar</button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>

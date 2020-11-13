@@ -1,0 +1,393 @@
+<h2 class="text-center">Administración de conceptos</h2>
+
+<!-- Inicio de obtener conceptos -->
+<div class="row">
+    <div class="offset-md-1 col-md-10">
+
+        <!-- Inicio de botones de redirección -->
+        <br>
+        <div class="col-md-12 text-center">
+            <button class="btn btn-success" (click)="modal_filterConceptos.show()">
+                Buscar concepto(s)
+            </button>
+            &emsp;
+            <a class="btn btn-success" (click)="modal_create.show()" style="color: white; cursor: pointer">
+                Crear concepto
+            </a>
+        </div>
+        <br>
+        <!-- Fin de botones de redirección -->
+
+        <!-- Inicio de tabla de conceptos -->
+        <table class="table table-striped">
+            <thead>
+            <tr class="text-center">
+                <th>No.</th>
+                <th>Nombre</th>
+                <th>Descripci&oacute;n</th>
+                <th>Monto</th>
+                <th>Estado</th>
+                <th>Operaciones</th>
+            </tr>
+            </thead>
+            <tbody *ngIf="this.lista_conceptos.length > 0; else elseBlock">
+            <tr class="text-center" *ngFor="let concepto of this.lista_conceptos.slice(this.ini,this.fin);let i = index">
+                <td class="align-middle">{{i + 1}}</td>
+                <td class="align-middle">{{concepto.nombre}}</td>
+                <td class="align-middle">{{concepto.descripcion}}</td>
+                <td class="align-middle">{{concepto.monto | currency}}</td>
+                <td class="align-middle">{{concepto.estado}}</td>
+                <td class="align-middle">
+                    <button class="btn btn-sm btn-warning"
+                            tooltip="Editar el concepto" (click)="load_concepto(concepto.concepto_id)">
+                        <i class="icon-wrench"></i>
+                    </button>
+                    <button class="btn btn-sm btn-danger"
+                            tooltip="Eliminar el concepto" (click)="delete_concepto(concepto.concepto_id)">
+                        <i class="icon-trash"></i>
+                    </button>
+                </td>
+            </tr>
+            </tbody>
+            <ng-template #elseBlock>
+                <tbody>
+                <tr class="text-center">
+                    <td colspan="6">No hay conceptos.</td>
+                </tr>
+                </tbody>
+            </ng-template>
+        </table>
+        <!-- Fin de tabla de conceptos -->
+
+        <!-- Inicio de botones para paginación -->
+        <div class="col-md-12 text-center">
+            <button class="btn btn-secondary" (click)="atras()" [disabled]="this.ini==0"><</button>
+            &emsp;
+            <button class="btn btn-secondary" (click)="adelante()"
+                    [disabled]="((this.lista_conceptos.length-1)-this.fin) < 0">></button>
+        </div>
+        <br>
+        <!-- Fin de botones para paginación -->
+    </div>
+</div>
+<!-- Fin de obtener conceptos -->
+
+<!-- Inicio ventana modal para búsqueda de conceptos -->
+<div bsModal #modal_filterConceptos="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title text-center">Buscar concepto(s)</h4>
+                <button type="button" class="close" (click)="ocultar_modal_busqueda()" aria-label="Cerrar">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group row">
+                    <label class="col-md-4 col-form-label text-right" for="FK_AREA_ACADEMICA">Área Académica</label>
+                    <div class="col-md-6">
+                        <select class="form-control" id="FK_AREA_ACADEMICA" name="FK_AREA_ACADEMICA"
+                                [(ngModel)]="this.FK_AREA_ACADEMICA">
+                            <option value="0">* Seleccione una opción</option>
+                            <option *ngFor="let area of this.areas_academicas" value="{{area.PK_AREA_ACADEMICA}}">
+                                {{area.NOMBRE}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-md-4 col-form-label text-right" for="NOMBRE">Nombre</label>
+                    <div class="col-md-6">
+                        <input class="form-control" id="NOMBRE" name="NOMBRE" [(ngModel)]="this.NOMBRE">
+                    </div>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+            <div class="modal-footer">
+                <div class="col-md-10 text-center">
+                    <button class="btn btn-secondary" (click)="filter_conceptos()">Buscar</button>
+                    <button class="btn btn-danger" (click)="ocultar_modal_busqueda()">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Fin ventana modal para búsqueda de conceptos -->
+
+<!-- Inicio ventana modal para modificar un concepto -->
+<div bsModal #modal_updateConceptos="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title text-center">Modificar datos de un concepto</h4>
+                <button type="button" class="close" (click)="ocultar_modal_modificar()" aria-label="Cerrar">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" *ngIf="this.concepto_modificacion">
+                <div class="form-group row" >
+                    <div class="alert alert-danger" [hidden]="!error_actualizar">
+                        {{error_actualizar}}
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-md-4 col-form-label text-right">
+                        Nombre
+                    </label>
+                    <div class="col-md-6">
+                        <input class="form-control" [(ngModel)]="this.concepto_modificacion.NOMBRE">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-md-4 col-form-label text-right">
+                        &Aacute;rea acad&eacute;mica
+                    </label>
+                    <div class="col-md-6">
+                        <select class="form-control" [(ngModel)]="this.concepto_modificacion.FK_AREA_ACADEMICA">
+                            <option value="0">* Seleccione una opción</option>
+                            <option *ngFor="let area of this.areas_academicas" value="{{area.PK_AREA_ACADEMICA}}">
+                                {{area.NOMBRE}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-md-4 col-form-label text-right">Descripcion</label>
+                    <div class="col-md-6">
+                            <textarea class="form-control" rows="3" style="resize: none"
+                                      [(ngModel)]="this.concepto_modificacion.DESCRIPCION"></textarea>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-md-4 col-form-label text-right">Monto</label>
+                    <div class="col-md-6">
+                        <input class="form-control" type="number" step="0.01" min="0"
+                               [(ngModel)]="this.concepto_modificacion.MONTO">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-md-4 col-form-label text-right">Si es un vale, ¿qué tipo es?</label>
+                    <div class="col-md-6">
+                        <select class="form-control" [(ngModel)]="this.concepto_modificacion.FK_VALE">
+                            <option value="1">Copia/Impresi&oacute;n</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-md-4 col-form-label text-right">Clave CONTPAQ</label>
+                    <div class="col-md-6">
+                        <input class="form-control" type="text" [(ngModel)]="this.concepto_modificacion.CLAVE_CONTPAQ">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-md-4 col-form-label text-right">Clave CONTPAQ TECNM</label>
+                    <div class="col-md-6">
+                        <input class="form-control" type="text" [(ngModel)]="this.concepto_modificacion.CLAVE_CONTPAQ_TECNM">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-md-4 col-form-label text-right">¿El monto a pagar es variable?</label>
+                    <div class="col-md-6">
+                        <select class="form-control" [(ngModel)]="concepto_modificacion.ES_MONTO_VARIABLE">
+                            <option value="0">No</option>
+                            <option value="1">Si</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-md-4 col-form-label text-right">¿La cantidad a elegir es variable?</label>
+                    <div class="col-md-6">
+                        <select class="form-control" [(ngModel)]="concepto_modificacion.ES_CANTIDAD_VARIABLE">
+                            <option value="0">No</option>
+                            <option value="1">Si</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-md-4 col-form-label text-right">Estatus</label>
+                    <div class="col-md-6">
+                        <select class="form-control" [(ngModel)]="concepto_modificacion.ESTATUS">
+                            <option value="1">Activo</option>
+                            <option value="0">Inactivo</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-md-4 col-form-label text-right">
+                        Al pagar el concepto,¿se genera un documento?
+                    </label>
+                    <div class="col-md-6">
+                        <br>
+                        <select class="form-control" [(ngModel)]="concepto_modificacion.GENERA_DOCUMENTO">
+                            <option value="0">No</option>
+                            <option value="1">Si</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+            <div class="modal-footer">
+                <div class="col-md-12 text-center">
+                    <button class="btn btn-secondary" (click)="update_datos(); this.error_actualizar = null">Guardar</button>
+                    <button type="button" class="btn btn-danger" (click)="ocultar_modal_modificar()">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Fin ventana modal para modificar concepto -->
+
+<!-- Inicio ventana modal de carga -->
+<div bsModal #loaderModal="bs-modal" class="modal" tabindex="-1" role="dialog" aria-hidden="false"
+     [config]="{backdrop: 'static',keyboard: false}" [style.display]="this.display">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content"
+             style="background-color: rgba(51, 51, 51, 0.8); background-clip: padding-box; border: 1px solid rgba(0, 0, 0, 0);">
+            <app-loader></app-loader>
+        </div>
+    </div>
+</div>
+<!-- Fin ventana modal de carga -->
+
+<!-- Inicio ventana modal para crear un concepto -->
+<div bsModal #modal_create="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title text-center">Crear un concepto</h4>
+                <button type="button" class="close" (click)="this.ocultar_modal_crear()" aria-label="Cerrar">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" >
+                <div class="form-group row">
+                    <label class="col-md-4 col-form-label text-right">
+                        Nombre
+                    </label>
+                    <div class="col-md-6">
+                        <input class="form-control" type="text" [(ngModel)]="this.concepto.NOMBRE">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-md-4 col-form-label text-right">
+                        Descripción
+                    </label>
+                    <div class="col-md-6">
+                        <textarea name="DESCRIPCION" class="form-control" rows="5" style="resize: none"
+                                  [(ngModel)]="this.concepto.DESCRIPCION"></textarea>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-md-4 col-form-label text-right">
+                        Área académica
+                    </label>
+                    <div class="col-md-6">
+                        <select class="form-control" name="FK_AREA_ACADEMICA" [(ngModel)]="this.concepto.FK_AREA_ACADEMICA">
+                            <option value="0">* Seleccione una opción</option>
+                            <option *ngFor="let area of this.areas_academicas" value="{{area.PK_AREA_ACADEMICA}}">
+                                {{area.NOMBRE}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-md-4 col-form-label text-right">
+                        Monto
+                    </label>
+                    <div class="col-md-6">
+                        <input type="number" class="form-control" name="MONTO" step="0.01" min="0" placeholder="0.00"
+                               [(ngModel)]="this.concepto.MONTO">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-md-4 col-form-label text-right">
+                        Si es un vale, ¿qué tipo es?
+                    </label>
+                    <div class="col-md-6">
+                        <select class="form-control" name="FK_VALE" [(ngModel)]="this.concepto.FK_VALE">
+                            <option value="null">* Seleccione una opción</option>
+                            <option value="1">Copia/Impresión</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-md-4 col-form-label text-right">
+                        Clave CONTPAQ
+                    </label>
+                    <div class="col-md-6">
+                        <input type="text" class="form-control" name="CLAVE_CONTPAQ" placeholder="XXXXX"
+                               [(ngModel)]="this.concepto.CLAVE_CONTPAQ">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-md-4 col-form-label text-right">
+                        Clave CONTPAQ TECNM
+                    </label>
+                    <div class="col-md-6">
+                        <input type="text" class="form-control" name="CLAVE_CONTPAQ_TECNM" placeholder="XXXX-XXX-XXX-XXX"
+                               [(ngModel)]="this.concepto.CLAVE_CONTPAQ_TECNM">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-md-4 col-form-label text-right">
+                        ¿El monto a pagar es variable?
+                    </label>
+                    <div class="col-md-6">
+                        <select class="form-control" name="ES_MONTO_VARIABLE" [(ngModel)]="this.concepto.ES_MONTO_VARIABLE">
+                            <option value="null">* Seleccione una opción</option>
+                            <option value="false">No</option>
+                            <option value="true">Si</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-md-4 col-form-label text-right">
+                        ¿La cantidad a elegir es variable?
+                    </label>
+                    <div class="col-md-6">
+                        <select class="form-control" name="ES_CANTIDAD_VARIABLE" [(ngModel)]="this.concepto.ES_CANTIDAD_VARIABLE">
+                            <option value="null">* Seleccione una opción</option>
+                            <option value="false">No</option>
+                            <option value="true">Si</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-md-4 col-form-label text-right">
+                        Estado
+                    </label>
+                    <div class="col-md-6">
+                        <select class="form-control" name="ESTATUS" [(ngModel)]="this.concepto.ESTATUS">
+                            <option value="null">* Seleccione una opción</option>
+                            <option value="true">Activo</option>
+                            <option value="false">Inactivo</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-md-4 col-form-label text-right">
+                        Al pagar el concepto,¿se genera un documento?
+                    </label>
+                    <div class="col-md-6">
+                        <select class="form-control" name="GENERA_DOCUMENTO" [(ngModel)]="this.concepto.GENERA_DOCUMENTO">
+                            <option value="null">* Seleccione una opción</option>
+                            <option value="false">No</option>
+                            <option value="true">Si</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+                <div class="modal-footer">
+                    <div class="col-md-12 text-center">
+                        <button class="btn btn-secondary" (click)="create_concepto();">Guardar</button>
+                        <button type="button" class="btn btn-danger" (click)="ocultar_modal_crear()">Cancelar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Fin ventana modal para crear un concepto -->

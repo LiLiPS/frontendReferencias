@@ -1,0 +1,280 @@
+<!-- INICIO CONTENIDO PARA EL PERFIL -->
+<h2 class="text-center">Actualizar datos de perfil</h2>
+<div class="row">
+    <div class="offset-md-1 col-md-10">
+        <form (ngSubmit)="onSubmit()">
+            <div class="col-md-12">
+                <hr>
+                <div class="h3 text-center">Datos personales</div>
+                <br>
+            </div>
+
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group text-center">
+                        <div class="img">
+                            <img *ngIf="this.perfil.FOTO_PERFIL == null" src="assets/img/avatars/default.svg" alt="" class="img img-thumbnail">
+                            <img *ngIf="this.perfil.FOTO_PERFIL != null" src="{{this.perfil_service.get_url_back(this.perfil.FOTO_PERFIL)}}" alt="" class="img img-thumbnail">
+                        </div>
+                        <br>
+                        <label class="btn btn-primary" style="cursor:pointer;">Cambiar foto de perfil
+                            <input type="file" id="FOTO" name="FOTO"
+                                   accept=".png, .jpeg, .jpg"
+                                   (change)="actualiza_foto($event)"
+                                   hidden>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="CURP">CURP</label>
+                        <input type="text" class="form-control" id="CURP" name="CURP"
+                               value="{{this.perfil.CURP}}" disabled>
+                    </div>
+                    <div class="form-group">
+                        <label for="NOMBRE">Nombre(s)</label>
+                        <input type="text" class="form-control" id="NOMBRE" name="NOMBRE"
+                               value="{{this.perfil.NOMBRE}}" disabled>
+                    </div>
+                    <div class="form-group">
+                        <label for="PRIMER_APELLIDO">Primer apellido</label>
+                        <input type="text" class="form-control" id="PRIMER_APELLIDO" name="PRIMER_APELLIDO"
+                               value="{{this.perfil.PRIMER_APELLIDO}}" disabled>
+                    </div>
+                    <div class="form-group">
+                        <label for="SEGUNDO_APELLIDO">Segundo apellido</label>
+                        <input type="text" class="form-control" id="SEGUNDO_APELLIDO" name="SEGUNDO_APELLIDO"
+                               value="{{this.perfil.SEGUNDO_APELLIDO}}" disabled>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="NUMERO_CONTROL">Número de SIIA</label>
+                        <input type="text" class="form-control" id="NUMERO_CONTROL" name="NUMERO_CONTROL"
+                               value="{{this.perfil.NUMERO_CONTROL}}" disabled>
+                    </div>
+                    <div class="form-group">
+                        <label for="AREA_ACADEMICA">Área de asignación</label>
+                        <select name="AREA_ACADEMICA" id="AREA_ACADEMICA" class="form-control"
+                                [(ngModel)]="this.form.AREA_ACADEMICA">
+                            <option value="0">* Seleccione una opción</option>
+                            <option *ngFor="let area_academica of this.areas_academicas"
+                                    value="{{area_academica.PK_AREA_ACADEMICA}}">
+                                {{area_academica.NOMBRE}}
+                            </option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="CORREO_INSTITUCIONAL">Correo institucional</label>
+                        <input type="text" class="form-control" id="CORREO_INSTITUCIONAL"
+                               name="CORREO_INSTITUCIONAL"
+                               [(ngModel)]="this.form.CORREO_INSTITUCIONAL"
+                               value="{{this.perfil.CORREO_INSTITUCIONAL}}">
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="FECHA_NACIMIENTO">Fecha de nacimiento</label>
+                        <input type="date" class="form-control" id="FECHA_NACIMIENTO" name="FECHA_NACIMIENTO"
+                               [(ngModel)]="this.form.FECHA_NACIMIENTO"
+                               value="{{this.perfil.FECHA_NACIMIENTO}}">
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="SEXO">Sexo</label>
+                        <select name="SEXO" id="SEXO" class="form-control" [(ngModel)]="this.form.SEXO">
+                            <option value="0">* Seleccione una opción</option>
+                            <option value="1">MASCULINO</option>
+                            <option value="2">FEMENINO</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="ESTADO_CIVIL">Estado civil</label>
+                        <select name="ESTADO_CIVIL" id="ESTADO_CIVIL" class="form-control"
+                                [(ngModel)]="this.form.ESTADO_CIVIL">
+                            <option value="0">* Seleccione una opción</option>
+                            <option *ngFor="let estado_civil of this.estados_civiles"
+                                    value="{{estado_civil.PK_ESTADO_CIVIL}}">
+                                {{estado_civil.NOMBRE}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="CORREO1">Correo personal principal</label>
+                        <input type="mail" class="form-control" id="CORREO1" name="CORREO1" [(ngModel)]="this.form.CORREO1"
+                               value="{{this.perfil.CORREO1}}">
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="CORREO2">Correo personal optativo</label>
+                        <input type="mail" class="form-control" id="CORREO2" name="CORREO2" [(ngModel)]="this.form.CORREO2"
+                               value="{{this.perfil.CORREO2}}">
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="TELEFONO_CASA">Teléfono fijo</label>
+                        <input type="text" class="form-control" id="TELEFONO_CASA" name="TELEFONO_CASA"
+                               [(ngModel)]="this.form.TELEFONO_CASA"
+                               value="{{this.perfil.TELEFONO_CASA}}">
+                        <small id="TELEFONO_CASAHelp" class="form-text text-muted">10 Dígitos</small>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="TELEFONO_MOVIL">Teléfono móvil</label>
+                        <input type="text" class="form-control" id="TELEFONO_MOVIL" name="TELEFONO_MOVIL"
+                               [(ngModel)]="this.form.TELEFONO_MOVIL"
+                               value="{{this.perfil.TELEFONO_MOVIL}}">
+                    </div>
+                </div>
+            </div>
+
+            <hr>
+            <div class="col-md-12">
+                <div class="h3 text-center">Domicilio</div>
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="CODIGO_POSTAL">Código postal</label>
+                        <input type="text" class="form-control" id="CODIGO_POSTAL" name="CODIGO_POSTAL"
+                               [(ngModel)]="this.form.CODIGO_POSTAL"
+                               value="{{this.perfil.CODIGO_POSTAL}}" (keyup)="procesa_codigo_postal()">
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="ENTIDAD_FEDERATIVA">Entidad federativa</label>
+                        <input type="mail" class="form-control" id="ENTIDAD_FEDERATIVA"
+                               name="ENTIDAD_FEDERATIVA"
+                               value="{{this.datos_codigo_postal.NOMBRE_ENTIDAD_FEDERATIVA}}"
+                               disabled>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="CIUDAD">Municipio</label>
+                        <input type="text" class="form-control" id="CIUDAD" name="CIUDAD"
+                               value="{{this.datos_codigo_postal.NOMBRE_CIUDAD}}" disabled>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="COLONIA">Colonia</label>
+                        <select name="COLONIA" id="COLONIA" class="form-control" [(ngModel)]="this.form.COLONIA">
+                            <option value="0"> * Selecciona una opción</option>
+                            <option *ngFor="let colonia of this.datos_codigo_postal.COLONIAS"
+                                    value="{{colonia.PK_COLONIA}}">
+                                {{colonia.NOMBRE}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="CALLE">Calle</label>
+                        <input type="text" class="form-control" id="CALLE" name="CALLE" [(ngModel)]="this.form.CALLE"
+                               value="{{this.perfil.CALLE}}">
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="NUMERO_EXTERIOR">Número exterior</label>
+                        <input type="mail" class="form-control" id="NUMERO_EXTERIOR" name="NUMERO_EXTERIOR"
+                               [(ngModel)]="this.form.NUMERO_EXTERIOR" value="{{this.perfil.NUMERO_EXTERIOR}}">
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="NUMERO_INTERIOR">Número interior</label>
+                        <input type="mail" class="form-control" id="NUMERO_INTERIOR" name="NUMERO_INTERIOR"
+                               [(ngModel)]="this.form.NUMERO_INTERIOR" value="{{this.perfil.NUMERO_INTERIOR}}">
+                    </div>
+                </div>
+            </div>
+
+            <hr>
+            <div class="col-md-12">
+                <div class="h3 text-center">Información de contacto en caso de emergencia</div>
+            </div>
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="form-group">
+                        <label for="NOMBRE_CONTACTO">Nombre completo</label>
+                        <input type="text" class="form-control" id="NOMBRE_CONTACTO" name="NOMBRE_CONTACTO"
+                               [(ngModel)]="this.form.NOMBRE_CONTACTO"
+                               value="{{this.perfil.NOMBRE_CONTACTO}}">
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="PARENTESCO_CONTACTO">Parentesco</label>
+                        <input type="text" class="form-control" id="PARENTESCO_CONTACTO"
+                               [(ngModel)]="this.form.PARENTESCO_CONTACTO"
+                               name="PARENTESCO_CONTACTO"
+                               value="{{this.perfil.PARENTESCO_CONTACTO}}">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="TELEFONO_CONTACTO">Teléfono</label>
+                        <input type="text" class="form-control" id="TELEFONO_CONTACTO" name="TELEFONO_CONTACTO"
+                               [(ngModel)]="this.form.TELEFONO_CONTACTO"
+                               value="{{this.perfil.TELEFONO_CONTACTO}}">
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="CORREO_CONTACTO">Correo electrónico</label>
+                        <input type="mail" class="form-control" id="CORREO_CONTACTO" name="CORREO_CONTACTO"
+                               [(ngModel)]="this.form.CORREO_CONTACTO"
+                               value="{{this.perfil.CORREO_CONTACTO}}">
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="col-md-12">
+                <div class="text-center">
+                    <button class="btn btn-block btn-primary col-md-2 offset-md-5" type="submit">
+                        Actualizar perfil
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- INICIO VENTANA MODAL DE CARGA -->
+<div bsModal #loaderModal="bs-modal" class="modal" tabindex="-1" role="dialog" aria-hidden="false"
+     [config]="{backdrop: 'static',keyboard: false}" [style.display]="this.display">
+    <!--[config]="{backdrop: 'static',keyboard: false}">-->
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content"
+             style="background-color: rgba(51, 51, 51, 0.8); background-clip: padding-box; border: 1px solid rgba(0, 0, 0, 0);">
+            <app-loader></app-loader>
+        </div>
+    </div>
+</div>
+<!-- FIN VENTANA MODAL DE CARGA -->
+
+<br><br>
+

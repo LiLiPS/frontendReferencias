@@ -1,0 +1,232 @@
+<h2 class="text-center">Administración de aplicación de grupo o nivel a conceptos</h2>
+
+<!-- Inicio de obtener aplicacions -->
+<div class="row">
+    <div class="offset-md-1 col-md-10">
+
+        <!-- Inicio de botones de redirección -->
+        <br>
+        <div class="col-md-12 text-center">
+            <button class="btn btn-success" (click)="modal_buscar.show()">
+                Buscar aplicación
+            </button>
+            &emsp;
+            <button class="btn btn-success" (click)="modal_create.show()">
+                Crear aplicación
+            </button>
+        </div>
+        <br>
+        <!-- Fin de botones de redirección -->
+
+        <!-- Inicio de tabla de aplicacion -->
+        <table class="table table-striped">
+            <thead>
+            <tr class="text-center">
+                <th>No.</th>
+                <th>Concepto</th>
+                <th>Nivel</th>
+                <th>Semestre</th>
+                <th>Grupo</th>
+                <th>Vigencia Inicial</th>
+                <th>Vigencia Final</th>
+                <th>Operaciones</th>
+            </tr>
+            </thead>
+            <tbody *ngIf="this.lista_aplicaciones.length > 0; else elseBlock">
+            <tr class="text-center" *ngFor="let aplicacion of this.lista_aplicaciones.slice(this.ini,this.fin); let i = index">
+                <td class="align-middle">{{i + 1}}</td>
+                <td class="align-middle">{{aplicacion.NOMBRE_CONCEPTO}}</td>
+                <td class="align-middle">{{aplicacion.NOMBRE_NIVEL}}</td>
+                <td class="align-middle">{{aplicacion.SEMESTRE}}</td>
+                <td class="align-middle">{{aplicacion.NOMBRE_GRUPO}}</td>
+                <td class="align-middle">{{aplicacion.VIGENCIA_INICIAL | date}}</td>
+                <td class="align-middle">{{aplicacion.VIGENCIA_FINAL | date}}</td>
+                <td class="align-middle">
+                    <!--<button class="btn btn-sm btn-warning"
+                            tooltip="Editar aplicacion" (click)="load_aplicacion(aplicacion.PK_aplicacion)">
+                        Editar
+                    </button>-->
+                    <button class="btn btn-sm btn-danger"
+                            tooltip="Eliminar aplicación" (click)="delete_aplicacion(aplicacion.PK_APLICACION_CONCEPTO)">
+                        <i class="icon-trash"></i>
+                    </button>
+                </td>
+            </tr>
+            </tbody>
+            <ng-template #elseBlock>
+                <tbody>
+                <tr class="text-center">
+                    <td colspan="8">No hay aplicaciones.</td>
+                </tr>
+                </tbody>
+            </ng-template>
+        </table>
+        <!-- Fin de tabla de aplicacion -->
+
+        <!-- Inicio de botones para paginación -->
+        <div class="col-md-12 text-center">
+            <button class="btn btn-secondary" (click)="atras()" [disabled]="this.ini==0"><</button>
+            &emsp;
+            <button class="btn btn-secondary" (click)="adelante()"
+                    [disabled]="((this.lista_aplicaciones.length-1)-this.fin) < 0">></button>
+        </div>
+        <br>
+        <!-- Fin de botones para paginación -->
+    </div>
+</div>
+<!-- Fin de obtener aplicacions -->
+
+<!-- Inicio ventana modal para búsqueda de aplicacions -->
+<div bsModal #modal_buscar="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title text-center">Buscar aplicación</h4>
+                <button type="button" class="close" (click)="this.ocultar_modal_busqueda()" aria-label="Cerrar">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group row">
+                    <label class="col-md-4 col-form-label text-right" >Concepto:</label>
+                    <div class="col-md-6">
+                        <input class="form-control" type="text" [(ngModel)]="this.filtro_concepto">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-md-4 col-form-label text-right" for="nivel">Nivel:</label>
+                    <div class="col-md-6">
+                        <input class="form-control" type="text" id="nivel" [(ngModel)]="this.filtro_nivel">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-md-4 col-form-label text-right" for="grupo">Grupo:</label>
+                    <div class="col-md-6">
+                        <input class="form-control" type="text" id="grupo" [(ngModel)]="this.filtro_grupo">
+                    </div>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+            <div class="modal-footer">
+                <div class="col-md-10 text-center">
+                    <button class="btn btn-secondary" (click)="this.filter_conceptos()">Buscar</button>
+                    <button class="btn btn-danger" (click)="ocultar_modal_busqueda()">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Fin ventana modal para búsqueda de aplicacions -->
+
+<!-- Inicio ventana modal para crear un aplicacion -->
+<div bsModal #modal_create="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title text-center">Crear una aplicación</h4>
+                <button type="button" class="close" (click)="this.ocultar_modal_crear()" aria-label="Cerrar">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" >
+                <div class="form-group row">
+                    <label class="col-md-4 col-form-label text-right">
+                        Concepto
+                    </label>
+                    <div class="col-md-6">
+                        <select name="concepto" id="concepto" class="form-control" [(ngModel)]="this.select_concepto">
+                            <option [value]="0">* Seleccione una opción</option>
+                            <option *ngFor="let concepto of this.lista_conceptos" value="{{concepto.PK_CONCEPTO}}">
+                                {{concepto.NOMBRE}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-md-4 col-form-label text-right">
+                        Nivel
+                    </label>
+                    <div class="col-md-6">
+                        <select class="form-control" [(ngModel)]="this.select_nivel">
+                            <option [value]="0">* Seleccione una opción</option>
+                            <option *ngFor="let nivel of this.lista_niveles" value="{{nivel.PK_NIVEL}}">
+                                {{nivel.NOMBRE}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group row" *ngIf="this.select_nivel==2 || this.select_nivel==3 || this.select_nivel == 4">
+                    <label class="col-md-4 col-form-label text-right">
+                        Semestre
+                    </label>
+                    <div class="col-md-6">
+                            <input class="form-control" type="text" [(ngModel)]="this.semestre">
+                    </div>
+                </div>
+                <div class="form-group row" *ngIf="this.select_nivel == 0">
+                    <label class="col-md-4 col-form-label text-right">
+                        Grupo
+                    </label>
+                    <div class="col-md-6">
+                        <select class="form-control" [(ngModel)]="this.select_grupo" >
+                            <option [value]="0">* Seleccione una opción</option>
+                            <option *ngFor="let grupo of this.lista_grupos" value="{{grupo.PK_GRUPO}}">
+                                {{grupo.NOMBRE}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-md-4 col-form-label text-right">
+                        ¿Es reinscripción?
+                    </label>
+                    <div class="col-md-6">
+                        <select class="form-control" [(ngModel)]="this.select_reinscripcion" >
+                            <option [value]="-1">* Seleccione una opción</option>
+                            <option [value]="1">Sí</option>
+                            <option [value]="0">No</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-md-4 col-form-label text-right">
+                        Vigencia inicial
+                    </label>
+                    <div class="col-md-6">
+                        <input type="date" class="form-control" [(ngModel)]="this.vigencia_inicial">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-md-4 col-form-label text-right">
+                        Vigencia final
+                    </label>
+                    <div class="col-md-6">
+                        <input type="date" class="form-control" [(ngModel)]="this.vigencia_final">
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+                <div class="modal-footer">
+                    <div class="col-md-12 text-center">
+                        <button class="btn btn-secondary" (click)="guarda_aplicacion();">Guardar</button>
+                        <button type="button" class="btn btn-danger" (click)="ocultar_modal_crear()">Cancelar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Fin ventana modal para crear aplicacion -->
+
+<!-- Inicio ventana modal de carga -->
+<div bsModal #loaderModal="bs-modal" class="modal" tabindex="-1" role="dialog" aria-hidden="false"
+     [config]="{backdrop: 'static',keyboard: false}" [style.display]="this.display">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content"
+             style="background-color: rgba(51, 51, 51, 0.8); background-clip: padding-box; border: 1px solid rgba(0, 0, 0, 0);">
+            <app-loader></app-loader>
+        </div>
+    </div>
+</div>
+<!-- Fin ventana modal de carga -->
