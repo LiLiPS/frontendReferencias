@@ -85,18 +85,6 @@
             </div>
             <div class="modal-body">
                 <div class="form-group row">
-                    <label class="col-md-4 col-form-label text-right" for="FK_AREA_ACADEMICA">Área Académica</label>
-                    <div class="col-md-6">
-                        <select class="form-control" id="FK_AREA_ACADEMICA" name="FK_AREA_ACADEMICA"
-                                [(ngModel)]="this.FK_AREA_ACADEMICA">
-                            <option value="0">* Seleccione una opción</option>
-                            <option *ngFor="let area of this.areas_academicas" value="{{area.PK_AREA_ACADEMICA}}">
-                                {{area.NOMBRE}}
-                            </option>
-                        </select>
-                    </div>
-                </div>
-                <div class="form-group row">
                     <label class="col-md-4 col-form-label text-right" for="NOMBRE">Nombre</label>
                     <div class="col-md-6">
                         <input class="form-control" id="NOMBRE" name="NOMBRE" [(ngModel)]="this.NOMBRE">
@@ -137,92 +125,29 @@
                         Nombre
                     </label>
                     <div class="col-md-6">
-                        <input class="form-control" [(ngModel)]="this.concepto_modificacion.NOMBRE">
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label class="col-md-4 col-form-label text-right">
-                        &Aacute;rea acad&eacute;mica
-                    </label>
-                    <div class="col-md-6">
-                        <select class="form-control" [(ngModel)]="this.concepto_modificacion.FK_AREA_ACADEMICA">
-                            <option value="0">* Seleccione una opción</option>
-                            <option *ngFor="let area of this.areas_academicas" value="{{area.PK_AREA_ACADEMICA}}">
-                                {{area.NOMBRE}}
-                            </option>
-                        </select>
+                        <input class="form-control" [(ngModel)]="this.concepto_modificacion.nombre">
                     </div>
                 </div>
                 <div class="form-group row">
                     <label class="col-md-4 col-form-label text-right">Descripcion</label>
                     <div class="col-md-6">
                             <textarea class="form-control" rows="3" style="resize: none"
-                                      [(ngModel)]="this.concepto_modificacion.DESCRIPCION"></textarea>
+                                      [(ngModel)]="this.concepto_modificacion.descripcion"></textarea>
                     </div>
                 </div>
                 <div class="form-group row">
                     <label class="col-md-4 col-form-label text-right">Monto</label>
                     <div class="col-md-6">
                         <input class="form-control" type="number" step="0.01" min="0"
-                               [(ngModel)]="this.concepto_modificacion.MONTO">
+                               [(ngModel)]="this.concepto_modificacion.monto">
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label class="col-md-4 col-form-label text-right">Si es un vale, ¿qué tipo es?</label>
+                    <label class="col-md-4 col-form-label text-right">Estado</label>
                     <div class="col-md-6">
-                        <select class="form-control" [(ngModel)]="this.concepto_modificacion.FK_VALE">
-                            <option value="1">Copia/Impresi&oacute;n</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label class="col-md-4 col-form-label text-right">Clave CONTPAQ</label>
-                    <div class="col-md-6">
-                        <input class="form-control" type="text" [(ngModel)]="this.concepto_modificacion.CLAVE_CONTPAQ">
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label class="col-md-4 col-form-label text-right">Clave CONTPAQ TECNM</label>
-                    <div class="col-md-6">
-                        <input class="form-control" type="text" [(ngModel)]="this.concepto_modificacion.CLAVE_CONTPAQ_TECNM">
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label class="col-md-4 col-form-label text-right">¿El monto a pagar es variable?</label>
-                    <div class="col-md-6">
-                        <select class="form-control" [(ngModel)]="concepto_modificacion.ES_MONTO_VARIABLE">
-                            <option value="0">No</option>
-                            <option value="1">Si</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label class="col-md-4 col-form-label text-right">¿La cantidad a elegir es variable?</label>
-                    <div class="col-md-6">
-                        <select class="form-control" [(ngModel)]="concepto_modificacion.ES_CANTIDAD_VARIABLE">
-                            <option value="0">No</option>
-                            <option value="1">Si</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label class="col-md-4 col-form-label text-right">Estatus</label>
-                    <div class="col-md-6">
-                        <select class="form-control" [(ngModel)]="concepto_modificacion.ESTATUS">
+                        <select class="form-control" [(ngModel)]="concepto_modificacion.estado">
                             <option value="1">Activo</option>
                             <option value="0">Inactivo</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label class="col-md-4 col-form-label text-right">
-                        Al pagar el concepto,¿se genera un documento?
-                    </label>
-                    <div class="col-md-6">
-                        <br>
-                        <select class="form-control" [(ngModel)]="concepto_modificacion.GENERA_DOCUMENTO">
-                            <option value="0">No</option>
-                            <option value="1">Si</option>
                         </select>
                     </div>
                 </div>
@@ -268,7 +193,7 @@
                         Nombre
                     </label>
                     <div class="col-md-6">
-                        <input class="form-control" type="text" [(ngModel)]="this.concepto.NOMBRE">
+                        <input class="form-control" type="text" [(ngModel)]="this.concepto.nombre">
                     </div>
                 </div>
                 <div class="form-group row">
@@ -277,20 +202,7 @@
                     </label>
                     <div class="col-md-6">
                         <textarea name="DESCRIPCION" class="form-control" rows="5" style="resize: none"
-                                  [(ngModel)]="this.concepto.DESCRIPCION"></textarea>
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label class="col-md-4 col-form-label text-right">
-                        Área académica
-                    </label>
-                    <div class="col-md-6">
-                        <select class="form-control" name="FK_AREA_ACADEMICA" [(ngModel)]="this.concepto.FK_AREA_ACADEMICA">
-                            <option value="0">* Seleccione una opción</option>
-                            <option *ngFor="let area of this.areas_academicas" value="{{area.PK_AREA_ACADEMICA}}">
-                                {{area.NOMBRE}}
-                            </option>
-                        </select>
+                                  [(ngModel)]="this.concepto.descripcion"></textarea>
                     </div>
                 </div>
                 <div class="form-group row">
@@ -299,60 +211,7 @@
                     </label>
                     <div class="col-md-6">
                         <input type="number" class="form-control" name="MONTO" step="0.01" min="0" placeholder="0.00"
-                               [(ngModel)]="this.concepto.MONTO">
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label class="col-md-4 col-form-label text-right">
-                        Si es un vale, ¿qué tipo es?
-                    </label>
-                    <div class="col-md-6">
-                        <select class="form-control" name="FK_VALE" [(ngModel)]="this.concepto.FK_VALE">
-                            <option value="null">* Seleccione una opción</option>
-                            <option value="1">Copia/Impresión</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label class="col-md-4 col-form-label text-right">
-                        Clave CONTPAQ
-                    </label>
-                    <div class="col-md-6">
-                        <input type="text" class="form-control" name="CLAVE_CONTPAQ" placeholder="XXXXX"
-                               [(ngModel)]="this.concepto.CLAVE_CONTPAQ">
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label class="col-md-4 col-form-label text-right">
-                        Clave CONTPAQ TECNM
-                    </label>
-                    <div class="col-md-6">
-                        <input type="text" class="form-control" name="CLAVE_CONTPAQ_TECNM" placeholder="XXXX-XXX-XXX-XXX"
-                               [(ngModel)]="this.concepto.CLAVE_CONTPAQ_TECNM">
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label class="col-md-4 col-form-label text-right">
-                        ¿El monto a pagar es variable?
-                    </label>
-                    <div class="col-md-6">
-                        <select class="form-control" name="ES_MONTO_VARIABLE" [(ngModel)]="this.concepto.ES_MONTO_VARIABLE">
-                            <option value="null">* Seleccione una opción</option>
-                            <option value="false">No</option>
-                            <option value="true">Si</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label class="col-md-4 col-form-label text-right">
-                        ¿La cantidad a elegir es variable?
-                    </label>
-                    <div class="col-md-6">
-                        <select class="form-control" name="ES_CANTIDAD_VARIABLE" [(ngModel)]="this.concepto.ES_CANTIDAD_VARIABLE">
-                            <option value="null">* Seleccione una opción</option>
-                            <option value="false">No</option>
-                            <option value="true">Si</option>
-                        </select>
+                               [(ngModel)]="this.concepto.monto">
                     </div>
                 </div>
                 <div class="form-group row">
@@ -360,22 +219,10 @@
                         Estado
                     </label>
                     <div class="col-md-6">
-                        <select class="form-control" name="ESTATUS" [(ngModel)]="this.concepto.ESTATUS">
+                        <select class="form-control" name="ESTATUS" [(ngModel)]="this.concepto.estado">
                             <option value="null">* Seleccione una opción</option>
-                            <option value="true">Activo</option>
-                            <option value="false">Inactivo</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label class="col-md-4 col-form-label text-right">
-                        Al pagar el concepto,¿se genera un documento?
-                    </label>
-                    <div class="col-md-6">
-                        <select class="form-control" name="GENERA_DOCUMENTO" [(ngModel)]="this.concepto.GENERA_DOCUMENTO">
-                            <option value="null">* Seleccione una opción</option>
-                            <option value="false">No</option>
-                            <option value="true">Si</option>
+                            <option value="1">Activo</option>
+                            <option value="0">Inactivo</option>
                         </select>
                     </div>
                 </div>
