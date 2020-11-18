@@ -1,8 +1,6 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {ConceptosServiceService} from '../../services/referencias/conceptos-service.service';
 import {InterfaceConcepto} from '../../models/referencias/ConceptoModel';
-import {InterfaceAreaAcademica} from '../../views/_models/GeneralModels';
-import {AreaAcademicaServiceService} from '../../services/area-academica-service.service';
 
 @Component({
     selector: 'app-conceptos',
@@ -16,7 +14,6 @@ export class ConceptosComponent implements OnInit {
     @ViewChild('modal_updateConceptos') modal_updateConcepto;
     @ViewChild('modal_create') modal_create;
     public lista_conceptos = [];
-    public areas_academicas: InterfaceAreaAcademica[] = [];
     public concepto_modificacion = {
         concepto_id: null,
         nombre: null,
@@ -30,7 +27,6 @@ export class ConceptosComponent implements OnInit {
     public error_eliminar = null;
     public PK_CONCEPTO: number;
     public NOMBRE: string;
-    public FK_AREA_ACADEMICA: number;
     public cantidad_por_pagina: number;
     public ini: number;
     public fin: number;
@@ -44,11 +40,9 @@ export class ConceptosComponent implements OnInit {
     };
 
 
-    constructor(private concepto_service: ConceptosServiceService,
-                private area_academica_service: AreaAcademicaServiceService) {
+    constructor(private concepto_service: ConceptosServiceService) {
         this._init();
         this.display = 'block';
-        this.areas_academicas = [];
         this.cantidad_por_pagina = 15;
         this.ini = 0;
         this.fin = this.cantidad_por_pagina;
@@ -74,12 +68,11 @@ export class ConceptosComponent implements OnInit {
         );
     }
 
-    // Busca a uno o varios conceptos por FK ÁREA ACADÉMICA y/o NOMBRE
+    // Busca a uno o varios conceptos por NOMBRE
     public filter_conceptos() {
         // Obtiene todos los filtros por el cual buscar el concepto
         const filtro = {
             PK_CONCEPTO: this.PK_CONCEPTO,
-            FK_AREA_ACADEMICA: this.FK_AREA_ACADEMICA,
             nombre: this.NOMBRE
         };
 
@@ -190,7 +183,7 @@ export class ConceptosComponent implements OnInit {
 
     // Eliminar un concepto
     public delete_concepto(pk_concepto) {
-        if (confirm('¿Realmente desea dar de baja al concepto?')) {
+        if (confirm('¿Realmente desea dar de baja el concepto?')) {
             this.error_eliminar = null;
 
             this.concepto_service.delete_concepto(pk_concepto).subscribe(
@@ -205,20 +198,9 @@ export class ConceptosComponent implements OnInit {
         }
     }
 
-    // Obtener áreas académicas
-    handleResponseAreas(data) {
-        this.areas_academicas = data.data;
-    }
-
-    // Obtener error de áreas académicas
-    handleError(error) {
-        alert('Ha ocurrido un error, inténtalo de nuevo.');
-    }
-
     // Inicialización de variables
     public _init() {
         this.PK_CONCEPTO = 0;
-        this.FK_AREA_ACADEMICA = 0;
         this.NOMBRE = '';
     }
 
