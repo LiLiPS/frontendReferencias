@@ -25,11 +25,29 @@ export interface NavData {
 } */
 // export {recargarRutas};
 let rutasRoles = [];
-if (sessionStorage.getItem('rutas')) {
+/*if (sessionStorage.getItem('rutas')) {
     rutasRoles = JSON.parse(sessionStorage.getItem('rutas'));
 } else {
     rutasRoles = rutasNav;
-}
+}*/
+let rutasModulos = [];
+
+rutasModulos.push({
+  name: 'conceptos',
+  url: '/referencias/e4ea811fdfd3f43bd4b0948734067104',
+  icon: 'icon-arrow-right'
+},
+{
+  name: 'Aplicación de conceptos',
+  url: '/referencias/c0db1804fdeb3f498cfe20573d201b23',
+  icon: 'icon-arrow-right'
+});
+
+rutasRoles.push({
+  name: 'administrador',
+  icon: 'icon-user',
+  children: rutasModulos
+});
 export const navItems: NavData[] = rutasRoles;
 
 
