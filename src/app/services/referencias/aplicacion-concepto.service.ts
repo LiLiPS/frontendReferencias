@@ -17,7 +17,7 @@ export class AplicacionConceptoService extends GenericServicesService {
     // guarda aplicaci+on
     guarda_aplicacion(body): any {
         return this.http.post<any>(
-            GenericServicesService.API_ENDPOINT + 'createAplicacionConcepto',
+            GenericServicesService.API_ENDPOINT + 'createAplicacion',
             body,
             GenericServicesService.HEADERS
         );
@@ -26,7 +26,15 @@ export class AplicacionConceptoService extends GenericServicesService {
     // consultar las aplicaciones
     consultar_aplicacion(): any {
         return this.http.get<any>(
-            GenericServicesService.API_ENDPOINT + 'aplicacionNivel',
+            GenericServicesService.API_ENDPOINT + 'getAplicaciones',
+            GenericServicesService.HEADERS
+        );
+    }
+
+    // consultar aplicaciones por id
+    cargarAplicacion(id): any {
+        return this.http.get<any>(
+            GenericServicesService.API_ENDPOINT + 'cargarAplicacion/' + id,
             GenericServicesService.HEADERS
         );
     }
@@ -34,7 +42,16 @@ export class AplicacionConceptoService extends GenericServicesService {
     // filtrar las aplicaciones
     filtrar_aplicacion(body): any {
         return this.http.post<any>(
-            GenericServicesService.API_ENDPOINT + 'aplicacionNivel',
+            GenericServicesService.API_ENDPOINT + 'getAplicacion',
+            body,
+            GenericServicesService.HEADERS
+        );
+    }
+
+    // Modifica datos de una aplicacion
+    public update_aplicacion(pk: number, body: object) {
+        return this.http.put(
+            GenericServicesService.API_ENDPOINT + `updateAplicacion/${pk}`,
             body,
             GenericServicesService.HEADERS
         );
@@ -43,7 +60,7 @@ export class AplicacionConceptoService extends GenericServicesService {
     // Eliminar una apliación
     eliminar_aplicacion(id): any {
         return this.http.delete(
-          GenericServicesService.API_ENDPOINT + 'deleteAplicacionConcepto/' + id,
+          GenericServicesService.API_ENDPOINT + 'deleteAplicacion/' + id,
             GenericServicesService.HEADERS
         );
     }

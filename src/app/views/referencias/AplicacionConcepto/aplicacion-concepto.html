@@ -26,7 +26,7 @@
                 <th>Concepto</th>
                 <th>Nivel</th>
                 <th>Semestre</th>
-                <th>Grupo</th>
+                <th>Estado</th>
                 <th>Vigencia Inicial</th>
                 <th>Vigencia Final</th>
                 <th>Operaciones</th>
@@ -35,19 +35,19 @@
             <tbody *ngIf="this.lista_aplicaciones.length > 0; else elseBlock">
             <tr class="text-center" *ngFor="let aplicacion of this.lista_aplicaciones.slice(this.ini,this.fin); let i = index">
                 <td class="align-middle">{{i + 1}}</td>
-                <td class="align-middle">{{aplicacion.NOMBRE_CONCEPTO}}</td>
-                <td class="align-middle">{{aplicacion.NOMBRE_NIVEL}}</td>
-                <td class="align-middle">{{aplicacion.SEMESTRE}}</td>
-                <td class="align-middle">{{aplicacion.NOMBRE_GRUPO}}</td>
-                <td class="align-middle">{{aplicacion.VIGENCIA_INICIAL | date}}</td>
-                <td class="align-middle">{{aplicacion.VIGENCIA_FINAL | date}}</td>
+                <td class="align-middle">{{aplicacion.nombre_concepto}}</td>
+                <td class="align-middle">{{aplicacion.nombre_nivel}}</td>
+                <td class="align-middle">{{aplicacion.semestre}}</td>
+                <td class="align-middle">{{(aplicacion.estado == 0)?'Inactivo' : 'Activo'}}</td>
+                <td class="align-middle">{{aplicacion.vigencia_inicial | date}}</td>
+                <td class="align-middle">{{aplicacion.vigencia_final | date}}</td>
                 <td class="align-middle">
-                    <!--<button class="btn btn-sm btn-warning"
-                            tooltip="Editar aplicacion" (click)="load_aplicacion(aplicacion.PK_aplicacion)">
-                        Editar
-                    </button>-->
+                    <button class="btn btn-sm btn-warning"
+                            tooltip="Editar aplicacion" (click)="load_aplicacion(aplicacion.concepto_nivel_id)">
+                        <i class="icon-wrench"></i>
+                    </button>
                     <button class="btn btn-sm btn-danger"
-                            tooltip="Eliminar aplicación" (click)="delete_aplicacion(aplicacion.PK_APLICACION_CONCEPTO)">
+                            tooltip="Eliminar aplicación" (click)="delete_aplicacion(aplicacion.concepto_nivel_id)">
                         <i class="icon-trash"></i>
                     </button>
                 </td>
@@ -100,12 +100,6 @@
                         <input class="form-control" type="text" id="nivel" [(ngModel)]="this.filtro_nivel">
                     </div>
                 </div>
-                <div class="form-group row">
-                    <label class="col-md-4 col-form-label text-right" for="grupo">Grupo:</label>
-                    <div class="col-md-6">
-                        <input class="form-control" type="text" id="grupo" [(ngModel)]="this.filtro_grupo">
-                    </div>
-                </div>
             </div>
             <div class="clearfix"></div>
             <div class="modal-footer">
@@ -119,13 +113,13 @@
 </div>
 <!-- Fin ventana modal para búsqueda de aplicacions -->
 
-<!-- Inicio ventana modal para crear un aplicacion -->
+<!-- Inicio ventana modal para crear y modificar una aplicacion -->
 <div bsModal #modal_create="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
      aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title text-center">Crear una aplicación</h4>
+                <h4 class="modal-title text-center">{{(this.id_aplicacion == 0)?'Crear una aplicación' : 'Modificar aplicación'}}</h4>
                 <button type="button" class="close" (click)="this.ocultar_modal_crear()" aria-label="Cerrar">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -138,8 +132,8 @@
                     <div class="col-md-6">
                         <select name="concepto" id="concepto" class="form-control" [(ngModel)]="this.select_concepto">
                             <option [value]="0">* Seleccione una opción</option>
-                            <option *ngFor="let concepto of this.lista_conceptos" value="{{concepto.PK_CONCEPTO}}">
-                                {{concepto.NOMBRE}}
+                            <option *ngFor="let concepto of this.lista_conceptos" value="{{concepto.concepto_id}}">
+                                {{concepto.nombre}}
                             </option>
                         </select>
                     </div>
@@ -151,13 +145,13 @@
                     <div class="col-md-6">
                         <select class="form-control" [(ngModel)]="this.select_nivel">
                             <option [value]="0">* Seleccione una opción</option>
-                            <option *ngFor="let nivel of this.lista_niveles" value="{{nivel.PK_NIVEL}}">
-                                {{nivel.NOMBRE}}
+                            <option *ngFor="let nivel of this.lista_niveles" value="{{nivel.nivel_id}}">
+                                {{nivel.nombre}}
                             </option>
                         </select>
                     </div>
                 </div>
-                <div class="form-group row" *ngIf="this.select_nivel==2 || this.select_nivel==3 || this.select_nivel == 4">
+                <div class="form-group row" >
                     <label class="col-md-4 col-form-label text-right">
                         Semestre
                     </label>
@@ -165,28 +159,15 @@
                             <input class="form-control" type="text" [(ngModel)]="this.semestre">
                     </div>
                 </div>
-                <div class="form-group row" *ngIf="this.select_nivel == 0">
-                    <label class="col-md-4 col-form-label text-right">
-                        Grupo
-                    </label>
-                    <div class="col-md-6">
-                        <select class="form-control" [(ngModel)]="this.select_grupo" >
-                            <option [value]="0">* Seleccione una opción</option>
-                            <option *ngFor="let grupo of this.lista_grupos" value="{{grupo.PK_GRUPO}}">
-                                {{grupo.NOMBRE}}
-                            </option>
-                        </select>
-                    </div>
-                </div>
                 <div class="form-group row">
                     <label class="col-md-4 col-form-label text-right">
-                        ¿Es reinscripción?
+                        Estado
                     </label>
                     <div class="col-md-6">
-                        <select class="form-control" [(ngModel)]="this.select_reinscripcion" >
+                        <select class="form-control" [(ngModel)]="this.estado" >
                             <option [value]="-1">* Seleccione una opción</option>
-                            <option [value]="1">Sí</option>
-                            <option [value]="0">No</option>
+                            <option [value]="1">Activo</option>
+                            <option [value]="0">Inactivo</option>
                         </select>
                     </div>
                 </div>
@@ -224,7 +205,7 @@
      [config]="{backdrop: 'static',keyboard: false}" [style.display]="this.display">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content"
-             style="background-color: rgba(51, 51, 51, 0.8); background-clip: padding-box; border: 1px solid rgba(0, 0, 0, 0);">
+             style="background-color: rgba(216, 211, 211, 0.075); background-clip: padding-box; border: 1px solid rgba(0, 0, 0, 0);">
             <app-loader></app-loader>
         </div>
     </div>

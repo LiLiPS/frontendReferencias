@@ -27,13 +27,13 @@ const routes: Routes = [
                     title: 'Conceptos'
                 }
             },
-            {
+            /*{
                 path: '0e2ab8a3dccc5bfb57b97e0131f80393', // grupos_referenciasEspeciales
                 component: GruposComponent,
                 data: {
                     title: 'Grupos'
                 }
-            },
+            },*/
             {
                 path: '7e925a5dcd636d3aa490ea323a337f6f', // historialConceptos
                 component: HistorialConceptosComponent,
@@ -41,13 +41,13 @@ const routes: Routes = [
                     title: 'Historial de conceptos'
                 }
             },
-            {
+            /*{
                 path: '73c369e11c78f47d0fd93d8bd83952d1', // grupoDetalle
                 component: GrupoDetalleComponent,
                 data: {
                     title: 'Detalle de grupos'
                 }
-            },
+            },*/
             {
                 path: 'c0db1804fdeb3f498cfe20573d201b23', // aplicacion de conceptos
                 component: AplicacionConceptoComponent,

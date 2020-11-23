@@ -17,7 +17,7 @@ export class NivelesService extends GenericServicesService {
     // Obtiene todos los niveles
     public get_niveles(): Observable<InterfaceConcepto[]> {
         return this.http.get<InterfaceConcepto[]>(
-            GenericServicesService.API_ENDPOINT + 'niveles',
+            GenericServicesService.API_ENDPOINT + 'getNiveles',
             GenericServicesService.HEADERS
         );
     }

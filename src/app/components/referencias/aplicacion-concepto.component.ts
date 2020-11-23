@@ -18,37 +18,40 @@ export class AplicacionConceptoComponent implements OnInit {
     @ViewChild('modal_create') modal_create;
     public lista_aplicaciones = [];
     public lista_conceptos = [];
-    public lista_grupos = [];
+    //public lista_grupos = [];
     public lista_niveles = [];
     public display = '';
     public error = null;
     public filtro_concepto = '';
     public filtro_nivel = '';
-    public filtro_grupo = '';
+    //public filtro_grupo = '';
     public select_concepto = 0;
     public select_nivel = 0;
-    public select_reinscripcion = -1;
+    public estado = -1;
+    //public select_reinscripcion = -1;
     public semestre = '';
-    public select_grupo = 0;
+    //public select_grupo = 0;
     public vigencia_inicial = '';
     public vigencia_final = '';
     public cantidad_por_pagina: number;
     public ini: number;
     public fin: number;
+    public id_aplicacion: number;
 
     constructor(private concepto_service: ConceptosServiceService,
                 private aplicacion_service: AplicacionConceptoService,
-                private grupos_service: GruposServiceService,
+                //private grupos_service: GruposServiceService,
                 private niveles_service: NivelesService) {
         this.display = 'block';
         this.cantidad_por_pagina = 15;
         this.ini = 0;
         this.fin = this.cantidad_por_pagina;
+        this.id_aplicacion = 0;
     }
 
     ngOnInit() {
         this.get_conceptos();
-        this.get_grupos();
+        //this.get_grupos();
         this.get_niveles();
         this.get_aplicaciones();
     }
@@ -70,7 +73,7 @@ export class AplicacionConceptoComponent implements OnInit {
     }
 
     // Obtiene todos los grupos
-    public get_grupos() {
+    /*public get_grupos() {
         // Llama al servicio para obtener grupos
         this.grupos_service.get_grupos().subscribe(
             data => {
@@ -83,7 +86,7 @@ export class AplicacionConceptoComponent implements OnInit {
             () => {
             }
         );
-    }
+    }*/
 
     // Obtiene todos los niveles
     public get_niveles() {
@@ -126,9 +129,9 @@ export class AplicacionConceptoComponent implements OnInit {
     public filter_conceptos() {
         // Obtiene todos los filtros por el cual buscar la aplicacion
         const filtro = {
-            filtro_concepto: this.filtro_concepto,
-            filtro_nivel: this.filtro_nivel,
-            filtro_grupo: this.filtro_grupo
+            nombre_concepto: this.filtro_concepto,
+            nombre_nivel: this.filtro_nivel
+            //filtro_grupo: this.filtro_grupo
         };
 
         // Llama al servicio que filtra a los conceptos
@@ -168,50 +171,88 @@ export class AplicacionConceptoComponent implements OnInit {
         }
     }
 
+    //cargar una aplicación
+    public load_aplicacion(pk_aplicacion) {
+        console.log(pk_aplicacion);
+
+        this.display = 'block';
+
+        this.aplicacion_service.cargarAplicacion(pk_aplicacion).subscribe(
+            (data) => {
+                this.id_aplicacion = data.concepto_nivel_id;
+                this.select_concepto = data.concepto_id;
+                this.select_nivel = data.nivel_id;
+                this.semestre = data.semestre;
+                this.estado = data.estado;
+                this.vigencia_inicial = data.vigencia_inicial;
+                this.vigencia_final = data.vigencia_final;
+
+                this.modal_create.show();
+            },
+            (error) => {
+                // dio error y recibimos detalle en error
+                alert('Error');
+                console.log(error);
+            },
+            () => {
+                // petición completa
+                this.display = 'none';
+            }
+        );
+    }
+
     public guarda_aplicacion() {
         if (this.select_concepto !== 0) {
-            if (this.select_nivel !== 0 || this.select_grupo !== 0) {
+            if (this.select_nivel !== 0) {
                 if (this.vigencia_inicial !== '') {
                     if (this.vigencia_final !== '') {
-                        if (this.select_reinscripcion === -1) {
-                            alert('Defina si es una reinscripción o no');
-                            return;
-                        }
                         const inicio = new Date(this.vigencia_inicial);
                         const fin = new Date(this.vigencia_final);
                         if (inicio < fin) {
-                            if (this.select_nivel != 0) {
-                                this.select_grupo = 0;
-                            }
-                            if (this.select_grupo != 0) {
-                                this.semestre = '';
-                            }
                             const body = {
-                                FK_CONCEPTO: this.select_concepto,
-                                FK_NIVEL: this.select_nivel,
-                                FK_GRUPO: this.select_grupo,
-                                ES_REINSCRIPCION: this.select_reinscripcion,
-                                SEMESTRE: this.semestre,
-                                VIGENCIA_INICIAL: this.vigencia_inicial,
-                                VIGENCIA_FINAL: this.vigencia_final,
+                                concepto_id: this.select_concepto,
+                                nivel_id: this.select_nivel,
+                                estatus: this.estado,
+                                semestre: this.semestre,
+                                vigencia_inicial: this.vigencia_inicial,
+                                vigencia_final: this.vigencia_final,
                             };
 
-                            this.aplicacion_service.guarda_aplicacion(body).subscribe(
-                                (data) => {
-                                    // to-do bien y recibimos del web service en data
-                                    console.log(data);
-                                    this.ngOnInit();
-                                },
-                                (error) => {
-                                    // dio error y recibimos detalle en error
-                                    alert('Error');
-                                    console.log(error);
-                                },
-                                () => {
-                                    // petición completa
-                                    this.modal_create.hide();
-                                }
-                            ); // 10 seg
+                            if(this.id_aplicacion == 0){
+                                this.aplicacion_service.guarda_aplicacion(body).subscribe(
+                                    (data) => {
+                                        // to-do bien y recibimos del web service en data
+                                        console.log(data);
+                                        this.ngOnInit();
+                                    },
+                                    (error) => {
+                                        // dio error y recibimos detalle en error
+                                        alert('Error');
+                                        console.log(error);
+                                    },
+                                    () => {
+                                        // petición completa
+                                        this.modal_create.hide();
+                                    }
+                                ); // 10 seg
+                            }else{
+                                this.aplicacion_service.update_aplicacion(this.id_aplicacion, body).subscribe(
+                                    (data) => {
+                                        // to-do bien y recibimos del web service en data
+                                        console.log(data);
+                                        this.ngOnInit();
+                                    },
+                                    (error) => {
+                                        // dio error y recibimos detalle en error
+                                        alert('Error');
+                                        console.log(error);
+                                    },
+                                    () => {
+                                        // petición completa
+                                        this.modal_create.hide();
+                                    }
+                                ); // 10 seg
+                            }                            
                         } else {
                             alert('Introduzca correctamente las fechas de vigencia. La fecha inicial debe ser menor que la final.');
                         }
@@ -222,7 +263,7 @@ export class AplicacionConceptoComponent implements OnInit {
                     alert('Seleccione una vigencia inicial');
                 }
             } else {
-                alert('Seleccione un nivel o un grupo');
+                alert('Seleccione un nivel');
             }
         } else {
             alert('Seleccione un concepto');
@@ -236,6 +277,13 @@ export class AplicacionConceptoComponent implements OnInit {
     }
 
     public ocultar_modal_crear() {
+        this.id_aplicacion = 0;
+        this.select_concepto = 0;
+        this.select_nivel = 0;
+        this.semestre = '';
+        this.estado = -1;
+        this.vigencia_inicial = '';
+        this.vigencia_final = '';
         this.modal_create.hide();
     }
 

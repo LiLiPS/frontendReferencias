@@ -46,6 +46,11 @@ export class NavbarSistemsComponent implements OnInit {
                     name: 'conceptos',
                     url: '/referencias/e4ea811fdfd3f43bd4b0948734067104',
                     icon: 'icon-arrow-right'
+                },
+                {
+                    name: 'aplicacionConcepto',
+                    url: '/referencias/c0db1804fdeb3f498cfe20573d201b23',
+                    icon: 'icon-arrow-right'
                 });
 
                 rutasRoles.push({
