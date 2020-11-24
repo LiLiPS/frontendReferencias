@@ -1,6 +1,6 @@
 <app-header [fixed]="true" [navbarBrandFull]="{src: 'assets/banco.ico', width: 60, height: 50, alt: 'TecNM'}"
     [navbarBrandMinimized]="{src: 'assets/banco.ico', width: 60, height: 50, alt: 'TecNM'}" [sidebarToggler]="'lg'"
-    [asideMenuToggler]="'lg'">
+    [asideMenuToggler]="''">
     <ul class="nav navbar-nav d-md-down-none">
         <!--
           <li class="nav-item px-3">
@@ -79,27 +79,11 @@
                </div>
              </li>-->
         </ol>
-        <div class="container-fluid">
-            <div *ngIf="mostrarAyuda">
-                <div class="embed-responsive embed-responsive-16by9" *ngIf="!mostrarVideo">
-                    <iframe class="embed-responsive-item" src="assets/video/guia.mp4"></iframe>
-                </div>
-                <div *ngIf="mostrarVideo">
-                    <p class="h3">Ayuda</p>
-                    <br>
-                    <a class="btn btn-warning" (click)="this.recargar();">Cargar menú de sistemas</a>
-                    <br>
-                    <br>
-                    <a href="assets/video/guia.mp4" target="_blank">Ver video guía del panel principal del sistema</a>
-                </div>
-            </div>
-            <router-outlet></router-outlet>
-        </div>
 
     </main>
-    <app-aside [fixed]="true" [display]="false">
+    <!--<app-aside [fixed]="true" [display]="false">
         <app-navbar-sistems></app-navbar-sistems>
-    </app-aside>
+    </app-aside>-->
 </div>
 <app-footer>
     <span>Generador de referencias bancarias</span>
@@ -107,18 +91,15 @@
 </app-footer>
 
 <!-- INICIO VENTANA MODAL DE CARGA -->
-<!-- INICIO VENTANA MODAL DE CARGA -->
 <div bsModal #loaderModal="bs-modal" class="modal" tabindex="-1" role="dialog" aria-hidden="false"
      [config]="{backdrop: 'static',keyboard: false}" [style.display]="this.display">
     <!--[config]="{backdrop: 'static',keyboard: false}">-->
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content"
-             style="background-color: rgba(51, 51, 51, 0.8); background-clip: padding-box; border: 1px solid rgba(0, 0, 0, 0);">
+             style="background-color: rgba(216, 211, 211, 0.075); background-clip: padding-box; border: 1px solid rgba(0, 0, 0, 0);">
             <app-loader></app-loader>
         </div>
     </div>
 </div>
-<!-- FIN VENTANA MODAL DE CARGA -->
-
 <!-- FIN VENTANA MODAL DE CARGA -->
 

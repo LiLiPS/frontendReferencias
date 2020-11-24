@@ -30,11 +30,11 @@ export class NavbarSistemsComponent implements OnInit {
             PK_SISTEMA: 1,
             NOMBRE: 'Referencias'
         });
-        //this.mostrarRoles('Referencias', 'Referencias');
+        this.mostrarRoles();
     }
 
-    mostrarRoles(sistemaSelect, nombreSistema) {
-        nombreSistema = 'Referencias';
+    mostrarRoles() {
+        const nombreSistema = 'Referencias';
         this.loaderModal.show();
         this.router.navigateByUrl('/home');
 
@@ -48,7 +48,7 @@ export class NavbarSistemsComponent implements OnInit {
                     icon: 'icon-arrow-right'
                 },
                 {
-                    name: 'aplicacionConcepto',
+                    name: 'Aplicación de conceptos',
                     url: '/referencias/c0db1804fdeb3f498cfe20573d201b23',
                     icon: 'icon-arrow-right'
                 });
